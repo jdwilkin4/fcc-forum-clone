@@ -4,9 +4,26 @@
   "description": "This is a clone project of the freeCodeCamp forum latest posts.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "browser-sync start --server --files .",
+    "prepare": "husky install",
+    "format": "prettier --write ."
   },
-  "keywords": [],
+  "keywords": [
+    "HTML",
+    "CSS",
+    "JavaScript"
+  ],
   "author": "Jessica Wilkins",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "husky": "^8.0.1",
+    "lint-staged": "^13.0.3",
+    "prettier": "^2.7.1"
+  },
+  "lint-staged": {
+    "*.{html,js,css,md,json}": "prettier --write"
+  },
+  "dependencies": {
+    "browser-sync": "^2.27.10"
+  }
 }
