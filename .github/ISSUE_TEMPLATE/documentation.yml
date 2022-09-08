@@ -1,0 +1,16 @@
+name: Documentation
+description: Request to update documentation or fix typos
+title: "[Docs] - "
+labels: ["documentation"]
+assignees:
+body:
+  - type: markdown
+    attributes:
+      value: "# Update documentation"
+  - type: textarea
+    id: docs
+    attributes:
+      label: What is the issue in the documentation?
+      description: Please explain the issue and what the change should be
+    validations:
+      required: true
