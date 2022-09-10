@@ -2,7 +2,6 @@ name: Chore
 description: Requests for cleaning up code, adding new files or updating packages
 title: "[Chore] - "
 labels: ["chore"]
-assignees:
 body:
   - type: markdown
     attributes:

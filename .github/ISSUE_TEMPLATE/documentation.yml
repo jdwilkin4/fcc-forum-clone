@@ -2,7 +2,6 @@ name: Documentation
 description: Request to update documentation or fix typos
 title: "[Docs] - "
 labels: ["documentation"]
-assignees:
 body:
   - type: markdown
     attributes:
