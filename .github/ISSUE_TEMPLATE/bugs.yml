@@ -1,5 +1,5 @@
-name: Bug Report
-description: File a bug report to fix issues in the codebase
+name: "Bug Report"
+description: "File a bug report to fix issues in the codebase"
 title: "[Bug] - "
 labels: ["bug"]
 assignees:
