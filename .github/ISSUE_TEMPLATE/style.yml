@@ -1,0 +1,15 @@
+name: Style
+description: Request UI design changes or suggestions for new styles
+title: "[Style] - "
+labels: ["style"]
+body:
+  - type: markdown
+    attributes:
+      value: "# Style UI request"
+  - type: textarea
+    id: description
+    attributes:
+      label: What is your UI design change or proposal?
+      description: Please explain your design proposal in as much detail as possible. Also provide figma mockups if available.
+    validations:
+      required: true
