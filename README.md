@@ -1,5 +1,9 @@
 # freeCodeCamp forum clone<!-- omit in toc -->
 
+## Description
+
+The application is a clone of [page with latest posts](https://forum.freecodecamp.org/latest) from freeCodeCamp forum. It is developed by the members of the freeCodeCamp community in order to develop soft skills, get more familiar with fetch API, Git workflow and develop general coding skills. _And also, just for the sake of happy coding!_
+
 ## Table of contents<!-- omit in toc -->
 
 - [How to contribute](#how-to-contribute)
