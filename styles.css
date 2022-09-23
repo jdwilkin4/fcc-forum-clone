@@ -5,3 +5,50 @@
   margin: 0;
   padding: 0;
 }
+
+:root {
+  --salmon-color: #f0aea9;
+  --light-skyblue-color: #8bd9f6;
+  --light-brown-color: #f8b172;
+  --light-green-color: #93cb5b;
+  --dark-green-color: #6bca6b;
+  --light-orange-color: #f1ba33;
+  --dark-orange-color: #f9aa23;
+  --coral-color: #f28373;
+}
+
+.career {
+  background-color: var(--salmon-color);
+}
+
+.feedback {
+  background-color: var(--light-skyblue-color);
+}
+
+.html-css {
+  background-color: var(--light-skyblue-color);
+}
+
+.support {
+  background-color: var(--light-brown-color);
+}
+
+.general {
+  background-color: var(--light-green-color);
+}
+
+.javascript {
+  background-color: var(--light-orange-color);
+}
+
+.backend {
+  background-color: var(--dark-orange-color);
+}
+
+.python {
+  background-color: var(--dark-green-color);
+}
+
+.motivation {
+  background-color: var(--coral-color);
+}
