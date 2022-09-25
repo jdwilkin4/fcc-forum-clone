@@ -7,14 +7,14 @@
 }
 
 :root {
-  --main-background: #0a0a23;
+  --logo-background: #0a0a23;
 }
 
 nav {
   position: absolute;
   width: 100%;
   height: 80px;
-  background: var(--main-background);
+  background: var(--logo-background);
   top: 0;
   left: 0;
   display: grid;
