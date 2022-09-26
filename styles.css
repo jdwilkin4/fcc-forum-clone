@@ -67,3 +67,8 @@ nav {
 .motivation {
   background: var(--coral);
 }
+
+#fcc-users {
+  display: flex;
+  flex-direction: row;
+}
