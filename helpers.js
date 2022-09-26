@@ -1,5 +1,3 @@
-// TODO: ADD Helper functions here
-
 export const forumCategoriesObj = {
   299: { category: "Career Advice", className: "career" },
   409: { category: "Project Feedback", className: "feedback" },
