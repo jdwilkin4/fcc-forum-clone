@@ -8,6 +8,14 @@
 
 :root {
   --logo-background: #0a0a23;
+  --salmon: #f0aea9;
+  --light-skyblue: #8bd9f6;
+  --light-brown: #f8b172;
+  --light-green: #93cb5b;
+  --dark-green: #6bca6b;
+  --light-orange: #f1ba33;
+  --dark-orange: #f9aa23;
+  --coral: #f28373;
 }
 
 nav {
@@ -28,4 +36,37 @@ img {
 
 nav a {
   cursor: pointer;
+}
+
+.career {
+  background: var(--salmon);
+}
+
+.feedback,
+.html-css {
+  background: var(--light-skyblue);
+}
+
+.support {
+  background: var(--light-brown);
+}
+
+.general {
+  background: var(--light-green);
+}
+
+.javascript {
+  background: var(--light-orange);
+}
+
+.backend {
+  background: var(--dark-orange);
+}
+
+.python {
+  background: var(--dark-green);
+}
+
+.motivation {
+  background: var(--coral);
 }
