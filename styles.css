@@ -7,6 +7,7 @@
 }
 
 :root {
+  --logo-background: #0a0a23;
   --salmon: #f0aea9;
   --light-skyblue: #8bd9f6;
   --light-brown: #f8b172;
@@ -15,6 +16,23 @@
   --light-orange: #f1ba33;
   --dark-orange: #f9aa23;
   --coral: #f28373;
+}
+
+nav {
+  position: sticky;
+  width: 100%;
+  height: 52px;
+  background: var(--logo-background);
+  top: 0;
+  left: 0;
+  display: grid;
+  place-items: center;
+}
+
+#fcc-logo {
+  width: 267px;
+  height: 32px;
+  margin-top: 0.28rem;
 }
 
 .career {
