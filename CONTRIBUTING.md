@@ -19,7 +19,7 @@ If you have some ideas about possible changes, but not sure enough, please share
 
 ### Picking up an issue to work on
 
-Browse through [opened issues](https://github.com/jdwilkin4/fcc-forum-clone/issues). Feel to start working on any issue which does not have have assignee yet!
+Browse through [opened issues](https://github.com/jdwilkin4/fcc-forum-clone/issues). Feel free to start working on any issue which does not have have assignee yet!
 
 If you are [collaborator](https://docs.github.com/en/account-and-profile/setting-up-and-managing-your-personal-account-on-github/managing-personal-account-settings/permission-levels-for-a-personal-account-repository#collaborator-access-for-a-repository-owned-by-a-personal-account) - assign yourself to the issue you want to work on.
 
@@ -64,10 +64,10 @@ where `url-you-just-copied` is the url to this repository (your fork of this pro
 
 ### Creating new branch to start dealing with the issue
 
-Change to the contrast ratio repo directory on your computer (if you are not already there):
+Change to the FCC forum clone directory on your computer (if you are not already there):
 
 ```
-cd contrast-ratio-repo
+cd fcc-forum-clone
 ```
 
 Now create a branch and switch to that new branch using the `git checkout` command. _One way to name a branch would be: `<number-of-issue>-<type-of-changes>-<what-the-issue-is-about>`_
@@ -112,5 +112,5 @@ When you're finished with the changes, create a pull request, also known as a PR
 
 ### Still a little bit lost?
 
-- Check out [this video](https://www.youtube.com/watch?v=RGOj5yH7evk) from freeCodeCamp youTube channel about basics of Git and GitHub.
-- Don't be shy to ask us about anything related to the project and working on it! Depending on the nature of your question, use PR threads, issue threads or the discussions!
+- Check out [this video](https://www.youtube.com/watch?v=RGOj5yH7evk) from freeCodeCamp youTube channel Git and GitHub basics.
+- Don't be shy to ask us about anything related to the project and working on it! Depending on your question, use pull request threads, issue threads or the discussions!
