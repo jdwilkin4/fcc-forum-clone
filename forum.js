@@ -119,7 +119,13 @@ export class Forum {
         (Date.now() - new Date(bumped_at)) / (1000 * 60)
       );
       // Append cells to the row
-      postRow.append(postTopic, postPosters, postViews, postActivity);
+      postRow.append(
+        postTopic,
+        postPosters,
+        postReplies,
+        postViews,
+        postActivity
+      );
       // Append the row to the table's body
       this.postsEl.append(postRow);
     });
