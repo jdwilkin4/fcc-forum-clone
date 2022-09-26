@@ -1,8 +1,8 @@
-# FreeCodeCamp forum clone's contributing guide
+# freeCodeCamp forum clone's contributing guide
 
 ## Documentation
 
-Please, make sure to read:
+Please, make sure to read through the following documents:
 
 - our [code of conduct](./CODE_OF_CONDUCT.md)
 - and [README](./README.md)
@@ -11,35 +11,31 @@ Please, make sure to read:
 
 ### Creating issues
 
-Feel free to check out [our codebase](https://github.com/jdwilkin4/fcc-forum-clone). If you think, that something could be added, fixed, improved - make sure, that there is no open issue for that already by going [here](https://github.com/jdwilkin4/fcc-forum-clone/issues).
+Feel free to check out [our codebase](https://github.com/jdwilkin4/fcc-forum-clone). If you think, that something could be added, fixed, or improved on, first that there is no open issue for that by looking through the [issues tab](https://github.com/jdwilkin4/fcc-forum-clone/issues).
 
 If you are confident, that your issue won't be a duplicate - go ahead and [create it](https://github.com/jdwilkin4/fcc-forum-clone/issues/new/)!
 
-If you have some ideas about possible changes, but not sure enough, please share your thoughts by creating new thread in [the discussions](https://github.com/jdwilkin4/fcc-forum-clone/discussions).
+If you have some ideas about possible changes, please share your thoughts by creating a new thread in [the discussions](https://github.com/jdwilkin4/fcc-forum-clone/discussions).
 
 ### Picking up an issue to work on
 
-Browse through [opened issues](https://github.com/jdwilkin4/fcc-forum-clone/issues). Feel free to start working on any issue which does not have have assignee yet!
+Browse through the [opened issues](https://github.com/jdwilkin4/fcc-forum-clone/issues) and feel free to start working on that does not have have an assignee yet.
 
-If you are [collaborator](https://docs.github.com/en/account-and-profile/setting-up-and-managing-your-personal-account-on-github/managing-personal-account-settings/permission-levels-for-a-personal-account-repository#collaborator-access-for-a-repository-owned-by-a-personal-account) - assign yourself to the issue you want to work on.
+If you are a [collaborator](https://docs.github.com/en/account-and-profile/setting-up-and-managing-your-personal-account-on-github/managing-personal-account-settings/permission-levels-for-a-personal-account-repository#collaborator-access-for-a-repository-owned-by-a-personal-account), assign yourself to the issue you want to work on.
 
-If you are not collaborator - would be better to left a comment in the issue thread, so we know that you are working on it.
+If you are not a collaborator, please leave a comment in the issue thread so we know that you are working on it.
 
 In any case - make sure to use the issue thread to ask questions about the issue if you need!
 
 ## Making changes
 
-If you are experienced with Git workflow, **How to contribute** section of our [README](./README.md) may be enough to work on the issue you picked up!
+If you are experienced with Git workflow, please read through the **How to contribute** section of our [README](./README.md).
 
-If you are somewhat new to Git and GitHub - in the below will be couple more tips and useful links about all this!
+If you are new to Git and GitHub, please read the follow sections below on how to get started.
 
 ### Installing git
 
-If you don't have git on your machine, [install it](https://help.github.com/articles/set-up-git/).
-
-### Installing dependencies
-
-Instructions about this can be found in [README](./README.md).
+If you don't have Git installed on your machine, [install it](https://help.github.com/articles/set-up-git/). If you are not sure if it is installed, please use the `git --version` command in the command line.
 
 ### Forking the repo
 
@@ -48,9 +44,9 @@ This will create a copy of this repository in your account.
 
 - Using GitHub Desktop:
   - [Getting started with GitHub Desktop](https://docs.github.com/en/desktop/installing-and-configuring-github-desktop/getting-started-with-github-desktop) will guide you through setting up Desktop.
-  - Once Desktop is set up, you can use it to [fork the repo](https://docs.github.com/en/desktop/contributing-and-collaborating-using-github-desktop/cloning-and-forking-repositories-from-github-desktop)!
+  - Once Desktop is set up, you can use it to [fork the repo](https://docs.github.com/en/desktop/contributing-and-collaborating-using-github-desktop/cloning-and-forking-repositories-from-github-desktop).
 
-### Creating local copy of the repo (aka cloning)
+### Creating a local copy of the repo (aka cloning)
 
 Now clone the forked repository to your machine. Go to your GitHub account, open the forked repository, click on the code button and then click the copy to clipboard icon.
 
@@ -62,7 +58,13 @@ git clone url-you-just-copied
 
 where `url-you-just-copied` is the url to this repository (your fork of this project).
 
-### Creating new branch to start dealing with the issue
+### Installing dependencies
+
+If you don't have Node.js installed on your computer, please read through [these instructions](https://nodejs.dev/en/). If you are not sure if Node.js is installed, please run the `node -v` command in the command line.
+
+Then change to the project directory by using the `cd fcc-forum-clone` command. To install the dependencies, run the `npm install` command.
+
+### Creating a new branch to start working on the issue
 
 Change to the FCC forum clone directory on your computer (if you are not already there):
 
@@ -112,5 +114,5 @@ When you're finished with the changes, create a pull request, also known as a PR
 
 ### Still a little bit lost?
 
-- Check out [this video](https://www.youtube.com/watch?v=RGOj5yH7evk) from freeCodeCamp youTube channel Git and GitHub basics.
-- Don't be shy to ask us about anything related to the project and working on it! Depending on your question, use pull request threads, issue threads or the discussions!
+- Check out [this video](https://www.youtube.com/watch?v=RGOj5yH7evk) from freeCodeCamp's YouTube channel on Git and GitHub basics.
+- Don't be shy to ask us about anything related to the project and working on it. Depending on your question, use pull request threads, issue threads or the discussions.
