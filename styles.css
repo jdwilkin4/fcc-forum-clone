@@ -1,3 +1,6 @@
+/* Import Poppins font family from Google Fonts */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;400;500;600&display=swap");
+
 *,
 *::before,
 *::after {
@@ -7,6 +10,8 @@
 }
 
 :root {
+  --primary-background: #2a2a40;
+  --primary-color: #f5f6f7;
   --logo-background: #0a0a23;
   --salmon: #f0aea9;
   --light-skyblue: #8bd9f6;
@@ -16,6 +21,21 @@
   --light-orange: #f1ba33;
   --dark-orange: #f9aa23;
   --coral: #f28373;
+}
+
+body {
+  background-color: var(--primary-background);
+  color: var(--primary-color);
+  font-family: "Poppins", sans-serif;
+}
+
+main > h1 {
+  font-size: 40px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 48px;
+  margin-top: 67px;
+  text-align: center;
 }
 
 nav {
