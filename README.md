@@ -2,57 +2,65 @@
 
 ## Description
 
-The application is a clone of [freeCodeCamp's 30 most recent forum posts](https://forum.freecodecamp.org/latest). It is developed by the members of the freeCodeCamp community in order to develop soft skills, get more familiar with Fetch API, Git workflow and develop general coding skills. _And also, just for the sake of happy coding!_
+This work is inspired by the [freeCodeCamp Forum Homepage](https://www.freecodecamp.org/learn/coding-interview-prep/take-home-projects/build-a-freecodecamp-forum-homepage) project. It is standalone front-end application and a clone of [freeCodeCamp's 30 most recent forum posts](https://forum.freecodecamp.org/latest) page built with ![HTML5](https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white)![CSS3](https://img.shields.io/badge/css3-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white)![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E). It is developed by the members of the freeCodeCamp community in order to develop soft skills, get more familiar with Fetch API, Git workflow and develop general coding skills. _And also, just for the sake of happy coding!_
 
 ## Table of contents<!-- omit in toc -->
 
-- [How to contribute](#how-to-contribute)
-- [How to install the dependencies](#how-to-install-the-dependencies)
-- [Prettier pre-commit hook](#prettier-pre-commit-hook)
-- [Script commands](#script-commands)
-  - [browser-sync](#browser-sync)
-  - [Prettier formatting script](#prettier-formatting-script)
+- [Installation](#installation)
+  - [Basis Setup](#basic-setup)
+  - [Running the project](#running-the-project)
+- [Contributing](#contributing)
+- [Help](#help)
+- [Why should you join us?](#why-should-you-join-us)
 
-## How to contribute
+## Installation
 
-**Please note:**
-If you are not marked as a collaborator for this project, then you will need to follow the first two steps.
+##### Basic Setup
 
-If you are marked as a collaborator, then you can clone the repo `git clone https://github.com/jdwilkin4/fcc-forum-clone.git` and then follow the rest of the steps in order.
+In order to follow further instruction and run this project on your local machine, you will need to install:
 
-1.  Fork the repo ([How to fork a repo instructions](https://docs.github.com/en/get-started/quickstart/fork-a-repo))
-2.  Clone the repo to your local machine. `git clone https://github.com/GITHUB-USERNAME-GOES-HERE/fcc-forum-clone.git`
-3.  Change directories to the fcc-forum-clone repo `cd fcc-forum-clone`
-4.  Install the dependencies `npm install`
-5.  Create a branch and switch to that new branch `git checkout -b new-branch-name`
-6.  Make some changes to the project
-7.  Start the live server to see your new changes `npm start`
-8.  Stage changes. `git add .`
-9.  Commit changes to your local branch. `git commit -m "commit message"`
-10. Push up your local branch and create a remote branch on GitHub `git push -u origin branch_name`
-11. Submit a Pull request so that we can review your changes. Click compare, leave a comment and click the create pull request button.
+- Javascript runtime environment - [Node.js](https://nodejs.org/en/)
+- Version control system - [Git](https://git-scm.com/downloads)
 
-## How to install the dependencies
+Before you download anything, check if you don't have it installed already by issuing these commands to your terminal:
 
-In order to use the Prettier and browser-sync packages, you will need to install the package dependencies.
+```sh
+$ node -v
+# v17.9.0
+$ git --version
+# git version 2.25.1
+```
 
-Make sure you are in the project directory `fcc-forum-clone`.
-Then run `npm install` which will install the package dependencies.
-This will add a `node_modules` folder to the root directory.
-The `node_modules` folder has already been added to the `.gitignore` file because it should never be committed or included in the production build of the site.
+If you get `command not found` message, it's not installed.
 
-## Prettier pre-commit hook
+_For Windows users_: I also personally recommend installing [Windows Terminal](https://apps.microsoft.com/store/detail/windows-terminal/9N0DX20HK701?hl=en-us&gl=us) where you can run _git-bash_ shell rather than _Command Prompt_, which will allow you typing **Linux commands on Windows**.
 
-Whenever you push changes to GitHub, the Prettier pre-commit hook will automatically format all of your staged files. This ensures that the whole team has clean and consistent formatting throughout the entire project.
+##### Running the project
 
-## Script commands
+1. Open your teminal
+1. `cd` into your projects directory
+1. Clone this repository to your local machine `git clone https://github.com/GITHUB-USERNAME-GOES-HERE/fcc-forum-clone.git`
+1. Change to the project directory `cd fcc-forum-clone`
+1. Make sure you are in the projects directory
+   Linux: `pwd` should result in `/home/me/fcc-projects/fcc-forum-clone`
+   Windows: Your prompt should look like this `C:\Users\Me\FCC-projects\fcc-forum-clone>`
+1. Install the [dependencies](https://www.quora.com/What-is-a-dependency-in-coding?share=1) using [npm](https://www.w3schools.com/whatis/whatis_npm.asp) program. `npm install`
+1. Run the project `npm start`
 
-### browser-sync
+##Contributing
 
-The `npm start` command will start the local server at port 3000 and automatically open a new browser window. Whenever you make changes, it will hot reload the page.
+We keep track of things to do, fix and enhance under the [Issues](https://github.com/jdwilkin4/fcc-forum-clone/issues) section. You can also think of it as our project structure.
+If you're thinking about contributing to this codebase, please visit our [contribution guide](https://github.com/jdwilkin4/fcc-forum-clone/blob/main/CONTRIBUTING.md) for more information.
 
-To stop the local server, use the `Ctrl+C` command.
+##Help
 
-### Prettier formatting script
+If you don't understand something, you are experiencing problems, or you just need a gentle nudge in the right direction, please don't hesitate to join our [discord server](https://discord.gg/QvvUtaThAz).
 
-The `npm run format` command will format all of the files for the project.
+## Why should you join us?
+
+In addition to working on your coding skills, you will:
+
+- experience what it's like to work on a project in a team of people
+- be working on tasks on your own as well as in collaboration with another members
+- discuss your changes and changes made by others
+- learn basic workflow
