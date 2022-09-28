@@ -47,12 +47,12 @@ _For Windows users_: I also personally recommend installing [Windows Terminal](h
 1. Install the [dependencies](https://www.quora.com/What-is-a-dependency-in-coding?share=1) using [npm](https://www.w3schools.com/whatis/whatis_npm.asp) program. `npm install`
 1. Run the project `npm start`
 
-##Contributing
+## Contributing
 
 We keep track of things to do, fix and enhance under the [Issues](https://github.com/jdwilkin4/fcc-forum-clone/issues) section. You can also think of it as our project structure.
 If you're thinking about contributing to this codebase, please visit our [contribution guide](https://github.com/jdwilkin4/fcc-forum-clone/blob/main/CONTRIBUTING.md) for more information.
 
-##Help
+## Help
 
 If you don't understand something, you are experiencing problems, or you just need a gentle nudge in the right direction, please don't hesitate to join our [discord server](https://discord.gg/QvvUtaThAz).
 
