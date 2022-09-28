@@ -2,12 +2,12 @@
 
 ## Description
 
-This work is inspired by the [freeCodeCamp Forum Homepage](https://www.freecodecamp.org/learn/coding-interview-prep/take-home-projects/build-a-freecodecamp-forum-homepage) project. It is standalone front-end application and a clone of [freeCodeCamp's 30 most recent forum posts](https://forum.freecodecamp.org/latest) page built with ![HTML5](https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white)![CSS3](https://img.shields.io/badge/css3-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white)![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E). It is developed by the members of the freeCodeCamp community in order to develop soft skills, get more familiar with Fetch API, Git workflow and develop general coding skills. _And also, just for the sake of happy coding!_
+This work is inspired by the [freeCodeCamp Forum Homepage](https://www.freecodecamp.org/learn/coding-interview-prep/take-home-projects/build-a-freecodecamp-forum-homepage) project. It is a standalone front-end application and a clone of [freeCodeCamp's 30 most recent forum posts](https://forum.freecodecamp.org/latest) page built with ![HTML5](https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white)![CSS3](https://img.shields.io/badge/css3-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white)![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E). It is developed by the members of the freeCodeCamp community in order to develop soft skills, get more familiar with Fetch API, Git workflow and develop general coding skills. _And also, just for the sake of happy coding!_
 
 ## Table of contents<!-- omit in toc -->
 
 - [Installation](#installation)
-  - [Basis Setup](#basic-setup)
+  - [Basic Setup](#basic-setup)
   - [Running the project](#running-the-project)
 - [Contributing](#contributing)
 - [Help](#help)
@@ -43,7 +43,7 @@ _For Windows users_: I also personally recommend installing [Windows Terminal](h
 1. Change to the project directory `cd fcc-forum-clone`
 1. Make sure you are in the projects directory
    Linux: `pwd` should result in `/home/me/fcc-projects/fcc-forum-clone`
-   Windows: Your prompt should look like this `C:\Users\Me\FCC-projects\fcc-forum-clone>`
+   Windows: Your prompt should look like this `C:\Users\Me\fcc-projects\fcc-forum-clone>`
 1. Install the [dependencies](https://www.quora.com/What-is-a-dependency-in-coding?share=1) using [npm](https://www.w3schools.com/whatis/whatis_npm.asp) program. `npm install`
 1. Run the project `npm start`
 
@@ -54,7 +54,7 @@ If you're thinking about contributing to this codebase, please visit our [contri
 
 ## Help
 
-If you don't understand something, you are experiencing problems, or you just need a gentle nudge in the right direction, please don't hesitate to join our [discord server](https://discord.gg/QvvUtaThAz).
+If you don't understand anything, you are experiencing problems, or you just need a gentle nudge in the right direction, please don't hesitate to join our [discord server](https://discord.gg/QvvUtaThAz).
 
 ## Why should you join us?
 
