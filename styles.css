@@ -85,3 +85,43 @@ nav {
 .motivation {
   background: var(--coral);
 }
+
+/* styling for table and table heads */
+
+table {
+  width: 80vw;
+  margin: auto;
+  margin-top: 25px;
+  border-collapse: collapse;
+}
+
+th {
+  font-size: 24px;
+  font-weight: 300;
+}
+
+.widthMax {
+  width: 800px;
+  text-align: left;
+}
+
+.widthMin {
+  width: 100px;
+}
+
+.borderBottom {
+  border-bottom: 1px solid var(--primary-color);
+  line-height: 40px;
+}
+
+@media (max-width: 800px) {
+  .activitiesDisplaySize {
+    display: none;
+  }
+}
+
+@media (max-width: 1024px) {
+  .viewsDisplaySize {
+    display: none;
+  }
+}
