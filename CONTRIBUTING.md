@@ -4,14 +4,14 @@
 
 Please, make sure to read through the following documents:
 
-- our [code of conduct](./CODE_OF_CONDUCT.md)
-- and [README](./README.md)
+- Our [code of conduct](./CODE_OF_CONDUCT.md)
+- And [README](./README.md)
 
 ## Issues
 
 ### Creating issues
 
-Feel free to check out [our codebase](https://github.com/jdwilkin4/fcc-forum-clone). If you think, that something could be added, fixed, or improved on, first that there is no open issue for that by looking through the [issues tab](https://github.com/jdwilkin4/fcc-forum-clone/issues).
+Feel free to check out [our codebase](https://github.com/jdwilkin4/fcc-forum-clone). If you think, that something could be added, fixed, or improved on, first check that there is no open issue for that by looking through the [issues tab](https://github.com/jdwilkin4/fcc-forum-clone/issues).
 
 If you are confident, that your issue won't be a duplicate - go ahead and [create it](https://github.com/jdwilkin4/fcc-forum-clone/issues/new/)!
 
@@ -19,7 +19,7 @@ If you have some ideas about possible changes, please share your thoughts by cre
 
 ### Picking up an issue to work on
 
-Browse through the [opened issues](https://github.com/jdwilkin4/fcc-forum-clone/issues) and feel free to start working on that does not have have an assignee yet.
+Browse through the [open issues](https://github.com/jdwilkin4/fcc-forum-clone/issues) and feel free to start working one that does not have an assignee yet.
 
 If you are a [collaborator](https://docs.github.com/en/account-and-profile/setting-up-and-managing-your-personal-account-on-github/managing-personal-account-settings/permission-levels-for-a-personal-account-repository#collaborator-access-for-a-repository-owned-by-a-personal-account), assign yourself to the issue you want to work on.
 
@@ -31,7 +31,7 @@ In any case - make sure to use the issue thread to ask questions about the issue
 
 If you are experienced with Git workflow, please read through the **How to contribute** section of our [README](./README.md).
 
-If you are new to Git and GitHub, please read the follow sections below on how to get started.
+If you are new to Git and GitHub, please read the following sections below on how to get started.
 
 ### Installing git
 
@@ -78,7 +78,7 @@ Now create a branch and switch to that new branch using the `git checkout` comma
 git checkout -b your-new-branch-name
 ```
 
-### Commit changes and pushing them
+### Committing changes and pushing them
 
 Commit the changes once you are happy with them.
 If you go to the project directory and execute the command `git status`, you'll see there are changes.
@@ -88,7 +88,7 @@ Add those changes to the branch you just created using the `git add` command:
 git add changed-file-name
 ```
 
-Now commit those changes to your local branch using the `git commit` command. _Try to make commit message descriptive, but not super verbose!_
+Now commit those changes to your local branch using the `git commit` command. _Try to make the commit message descriptive, but not super verbose!_
 
 ```
 git commit -m "commit message"
