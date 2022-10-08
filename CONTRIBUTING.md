@@ -1,5 +1,23 @@
 # freeCodeCamp forum clone's contributing guide
 
+## Table of Contents
+
+- [freeCodeCamp forum clone's contributing guide](#freecodecamp-forum-clones-contributing-guide)
+  - [Table of Contents](#table-of-contents)
+  - [Documentation](#documentation)
+  - [Issues](#issues)
+    - [Creating issues](#creating-issues)
+    - [Picking up an issue to work on](#picking-up-an-issue-to-work-on)
+  - [Making changes](#making-changes)
+    - [Installing git](#installing-git)
+    - [Forking the repo](#forking-the-repo)
+    - [Creating a local copy of the repo (aka cloning)](#creating-a-local-copy-of-the-repo-aka-cloning)
+    - [Installing dependencies](#installing-dependencies)
+    - [Creating a new branch to start working on the issue](#creating-a-new-branch-to-start-working-on-the-issue)
+    - [Committing changes and pushing them](#committing-changes-and-pushing-them)
+    - [Pull Request](#pull-request)
+    - [Still a little bit lost?](#still-a-little-bit-lost)
+
 ## Documentation
 
 Please, make sure to read through the following documents:
