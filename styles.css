@@ -110,10 +110,6 @@ thead {
   text-align: left;
 }
 
-.interactionsHead {
-  width: 30%;
-}
-
 .views,
 .activity {
   display: none;
