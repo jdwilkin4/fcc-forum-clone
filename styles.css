@@ -85,3 +85,44 @@ nav {
 .motivation {
   background: var(--coral);
 }
+
+/* styling for table and table heads */
+
+table {
+  width: 85vw;
+  margin: auto;
+  margin-top: 25px;
+  border-collapse: collapse;
+}
+
+th {
+  font-size: 24px;
+  font-weight: 300;
+}
+
+thead {
+  border-bottom: 1px solid var(--primary-color);
+  line-height: 40px;
+}
+
+.topics {
+  width: 70%;
+  text-align: left;
+}
+
+.views,
+.activity {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .activity {
+    display: table-cell;
+  }
+}
+
+@media (min-width: 992px) {
+  .views {
+    display: table-cell;
+  }
+}
