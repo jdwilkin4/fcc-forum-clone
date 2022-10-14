@@ -10,3 +10,4 @@ import { forumCategoriesObj } from "./helpers.js";
 const copyright = document.getElementById("copyright");
 
 copyright.innerText = new Date().getFullYear();
+const postsContainer = document.getElementById("posts-container");
