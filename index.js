@@ -11,4 +11,3 @@ const copyright = document.getElementById("copyright");
 
 copyright.innerText = new Date().getFullYear();
 const postsContainer = document.getElementById("posts-container");
-console.log(postsContainer);
