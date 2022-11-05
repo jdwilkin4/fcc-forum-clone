@@ -26,6 +26,8 @@ fetch(FORUM_API)
     forumData = data;
     console.log("success");
     console.log(forumData);
+    const topics = forumData["topic_list"].topics;
+    displayTopicList(topics);
   })
   .catch((error) => {
     isError = true;
@@ -34,5 +36,38 @@ fetch(FORUM_API)
   .finally(() => {
     isLoading = false;
   });
+
+const displayTopicList = (topicList) => {
+  for (const topic of topicList) {
+    const categoryId = topic["category_id"];
+    if (!(categoryId in forumCategoriesObj)) {
+      continue;
+    }
+    const category = forumCategoriesObj[categoryId].className;
+    const categoryText = forumCategoriesObj[categoryId].category;
+    displayTopic(topic, category, categoryText);
+  }
+};
+
+const displayTopic = (topic, category, categoryText) => {
+  let post = `<tr> 
+    <td>
+      <span id='post-title'>
+        <a href='${FORUM_TOPIC}/${topic.slug}' target='_blank'>
+          ${topic.title}
+        </a>
+      </span>
+      <div id='post-category'>
+        <a class='${category}' href='${FORUM_CATEGORY}/${category}' target='_blank'>
+          ${categoryText}
+        </a>
+      </div>
+    </td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>`;
+  postsContainer.innerHTML += post;
+};
 
 copyright.innerText = new Date().getFullYear();
