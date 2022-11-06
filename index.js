@@ -5,7 +5,7 @@ import {
   FORUM_API,
 } from "./constants.js";
 
-import { forumCategoriesObj } from "./helpers.js";
+import { supportedTopicCategories } from "./helpers.js";
 
 const copyright = document.getElementById("copyright");
 const postsContainer = document.getElementById("posts-container");
@@ -38,18 +38,13 @@ fetch(FORUM_API)
   });
 
 const displayTopicList = (topicList) => {
-  for (const topic of topicList) {
-    const categoryId = topic["category_id"];
-    if (!(categoryId in forumCategoriesObj)) {
-      continue;
-    }
-    const category = forumCategoriesObj[categoryId].className;
-    const categoryText = forumCategoriesObj[categoryId].category;
-    displayTopic(topic, category, categoryText);
-  }
+  topicList
+    .filter((topic) => topic["category_id"] in supportedTopicCategories)
+    .forEach(displayTopic);
 };
 
-const displayTopic = (topic, category, categoryText) => {
+const displayTopic = (topic) => {
+  const category = supportedTopicCategories[topic["category_id"]];
   let post = `<tr> 
     <td>
       <span id='post-title'>
@@ -58,8 +53,8 @@ const displayTopic = (topic, category, categoryText) => {
         </a>
       </span>
       <div id='post-category'>
-        <a class='${category}' href='${FORUM_CATEGORY}/${category}' target='_blank'>
-          ${categoryText}
+        <a class='${category.className}' href='${FORUM_CATEGORY}/${category.className}' target='_blank'>
+          ${category.name}
         </a>
       </div>
     </td>
