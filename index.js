@@ -5,7 +5,7 @@ import {
   FORUM_API,
 } from "./constants.js";
 
-import { forumCategoriesObj } from "./helpers.js";
+import { supportedTopicCategories } from "./helpers.js";
 
 const copyright = document.getElementById("copyright");
 const postsContainer = document.getElementById("posts-container");
@@ -26,6 +26,8 @@ fetch(FORUM_API)
     forumData = data;
     console.log("success");
     console.log(forumData);
+    const topics = forumData["topic_list"].topics;
+    displayTopicList(topics);
   })
   .catch((error) => {
     isError = true;
@@ -34,5 +36,33 @@ fetch(FORUM_API)
   .finally(() => {
     isLoading = false;
   });
+
+const displayTopicList = (topicList) => {
+  topicList
+    .filter((topic) => topic["category_id"] in supportedTopicCategories)
+    .forEach(displayTopic);
+};
+
+const displayTopic = (topic) => {
+  const category = supportedTopicCategories[topic["category_id"]];
+  let post = `<tr> 
+    <td>
+      <span id='post-title'>
+        <a href='${FORUM_TOPIC}/${topic.slug}' target='_blank'>
+          ${topic.title}
+        </a>
+      </span>
+      <div id='post-category'>
+        <a class='${category.name}' href='${FORUM_CATEGORY}/${category.name}' target='_blank'>
+          ${category.longName}
+        </a>
+      </div>
+    </td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>`;
+  postsContainer.innerHTML += post;
+};
 
 copyright.innerText = new Date().getFullYear();

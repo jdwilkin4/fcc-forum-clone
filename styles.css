@@ -20,6 +20,10 @@
   --light-orange: #f1ba33;
   --dark-orange: #f9aa23;
   --coral: #f28373;
+  --blue-green: #5eafa0;
+  --border-color: #3c3b48;
+  --primary-text: #d1d1d1;
+  --dark-text: #000;
 }
 
 body {
@@ -74,7 +78,7 @@ nav {
   background: var(--light-orange);
 }
 
-.backend {
+.backend-development {
   background: var(--dark-orange);
 }
 
@@ -84,6 +88,10 @@ nav {
 
 .motivation {
   background: var(--coral);
+}
+
+.contributors {
+  background: var(--blue-green);
 }
 
 /* styling for table and table heads */
@@ -103,6 +111,34 @@ th {
 thead {
   border-bottom: 1px solid var(--primary-color);
   line-height: 40px;
+}
+
+tbody > tr {
+  font-size: 20px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+td {
+  padding: 20px 10px;
+}
+
+a {
+  text-decoration: none;
+}
+
+#post-title > a {
+  color: var(--primary-text);
+}
+
+#post-category {
+  display: flex;
+  margin-top: 2px;
+}
+
+#post-category > a {
+  color: var(--dark-text);
+  font-size: 16px;
+  padding: 0 4px;
 }
 
 .topics {
