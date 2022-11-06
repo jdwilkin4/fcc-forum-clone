@@ -53,8 +53,8 @@ const displayTopic = (topic) => {
         </a>
       </span>
       <div id='post-category'>
-        <a class='${category.className}' href='${FORUM_CATEGORY}/${category.className}' target='_blank'>
-          ${category.name}
+        <a class='${category.name}' href='${FORUM_CATEGORY}/${category.name}' target='_blank'>
+          ${category.longName}
         </a>
       </div>
     </td>
