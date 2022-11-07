@@ -126,16 +126,16 @@ a {
   text-decoration: none;
 }
 
-#post-title > a {
+.post-title {
   color: var(--primary-text);
 }
 
-#post-category {
+.post-category {
   display: flex;
   margin-top: 2px;
 }
 
-#post-category > a {
+.post-category > a {
   color: var(--dark-text);
   font-size: 16px;
   padding: 0 4px;
