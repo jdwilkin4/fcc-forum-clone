@@ -46,9 +46,9 @@ const displayTopicList = (topicList) => {
 const displayTopic = (topic) => {
   const category = supportedTopicCategories[topic["category_id"]];
 
-  const displaySummary = (hasSummary) => {
+  const ifSummaryDisplay = () => {
     let summary = "";
-    if (hasSummary) {
+    if (topic["has_summary"]) {
       summary = `
       <p class='post-summary'>
         ${topic.excerpt}
@@ -74,7 +74,7 @@ const displayTopic = (topic) => {
           ${category.longName}
         </a>
       </div>
-      ${displaySummary(topic["has_summary"])}
+      ${ifSummaryDisplay()}
     </td>
     <td></td>
     <td></td>
