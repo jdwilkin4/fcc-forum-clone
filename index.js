@@ -62,15 +62,13 @@ const displayTopic = (topic) => {
   let post = `
   <tr> 
     <td>
-      <span id='post-title'>
-        <a href='${FORUM_TOPIC}/${topic.slug}' target='_blank'>
+      <span>
+        <a class='post-title' href='${FORUM_TOPIC}/${topic.slug}' target='_blank'>
           ${topic.title}
         </a>
       </span>
-      <div id='post-category'>
-        <a class='${category.name}' href='${FORUM_CATEGORY}/${
-    category.name
-  }' target='_blank'>
+      <div class='post-category'>
+        <a class='${category.name}' href='${FORUM_CATEGORY}/${category.name}' target='_blank'>
           ${category.longName}
         </a>
       </div>
