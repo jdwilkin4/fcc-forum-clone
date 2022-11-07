@@ -45,7 +45,22 @@ const displayTopicList = (topicList) => {
 
 const displayTopic = (topic) => {
   const category = supportedTopicCategories[topic["category_id"]];
-  let post = `<tr> 
+
+  const displaySummary = (hasSummary) => {
+    let summary = "";
+    if (hasSummary) {
+      summary = `
+      <p class='post-summary'>
+        ${topic.excerpt}
+        <a class='post-read-more' href='${FORUM_TOPIC}/${topic.slug}' target='_blank'>read more</a>
+      </p>
+      `;
+    }
+    return summary;
+  };
+
+  let post = `
+  <tr> 
     <td>
       <span id='post-title'>
         <a href='${FORUM_TOPIC}/${topic.slug}' target='_blank'>
@@ -53,10 +68,13 @@ const displayTopic = (topic) => {
         </a>
       </span>
       <div id='post-category'>
-        <a class='${category.name}' href='${FORUM_CATEGORY}/${category.name}' target='_blank'>
+        <a class='${category.name}' href='${FORUM_CATEGORY}/${
+    category.name
+  }' target='_blank'>
           ${category.longName}
         </a>
       </div>
+      ${displaySummary(topic["has_summary"])}
     </td>
     <td></td>
     <td></td>
