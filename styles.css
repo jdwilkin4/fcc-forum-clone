@@ -141,6 +141,15 @@ a {
   padding: 0 4px;
 }
 
+.post-summary {
+  font-size: 75%;
+}
+
+.post-read-more {
+  color: var(--primary-text);
+  text-decoration: underline;
+}
+
 .topics {
   width: 70%;
   text-align: left;
