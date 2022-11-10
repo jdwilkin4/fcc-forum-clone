@@ -26,8 +26,8 @@ fetch(FORUM_API)
     forumData = data;
     console.log("success");
     console.log(forumData);
-    const topics = forumData["topic_list"].topics;
-    displayTopicList(topics);
+    const posts = forumData["topic_list"].topics;
+    displayPostList(posts);
   })
   .catch((error) => {
     isError = true;
@@ -37,38 +37,42 @@ fetch(FORUM_API)
     isLoading = false;
   });
 
-const displayTopicList = (topicList) => {
-  topicList
-    .filter((topic) => topic["category_id"] in supportedTopicCategories)
-    .forEach(displayTopic);
+const displayPostList = (postList) => {
+  postList
+    .filter((post) => post["category_id"] in supportedTopicCategories)
+    .forEach(displayPost);
 };
 
-const displayTopic = (topic) => {
-  const category = supportedTopicCategories[topic["category_id"]];
+const displayPost = (post) => {
+  const category = supportedTopicCategories[post["category_id"]];
 
   const ifSummaryDisplay = () => {
     let summary = "";
-    if (topic["has_summary"]) {
+    if (post["has_summary"]) {
       summary = `
       <p class='post-summary'>
-        ${topic.excerpt}
-        <a class='post-read-more' href='${FORUM_TOPIC}/${topic.slug}' target='_blank'>read more</a>
+        ${post.excerpt}
+        <a class='post-read-more' href='${FORUM_TOPIC}/${post.slug}' target='_blank'>read more</a>
       </p>
       `;
     }
     return summary;
   };
 
-  let post = `
+  let postRow = `
   <tr> 
     <td>
       <span>
-        <a class='post-title' href='${FORUM_TOPIC}/${topic.slug}' target='_blank'>
-          ${topic.title}
+        <a class='post-title' href='${FORUM_TOPIC}/${
+    post.slug
+  }' target='_blank'>
+          ${post.title}
         </a>
       </span>
       <div class='post-category'>
-        <a class='${category.name}' href='${FORUM_CATEGORY}/${category.name}' target='_blank'>
+        <a class='${category.name}' href='${FORUM_CATEGORY}/${
+    category.name
+  }' target='_blank'>
           ${category.longName}
         </a>
       </div>
@@ -78,7 +82,7 @@ const displayTopic = (topic) => {
     <td></td>
     <td></td>
   </tr>`;
-  postsContainer.innerHTML += post;
+  postsContainer.innerHTML += postRow;
 };
 
 copyright.innerText = new Date().getFullYear();
