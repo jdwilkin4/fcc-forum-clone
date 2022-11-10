@@ -3,6 +3,7 @@ import {
   FORUM_CATEGORY,
   FORUM_AVATARS,
   FORUM_API,
+  FORUM_USER,
 } from "./constants.js";
 
 import { supportedTopicCategories } from "./helpers.js";
@@ -27,7 +28,8 @@ fetch(FORUM_API)
     console.log("success");
     console.log(forumData);
     const topics = forumData["topic_list"].topics;
-    displayTopicList(topics);
+    const users = forumData["users"];
+    displayTopicList(topics, users);
   })
   .catch((error) => {
     isError = true;
@@ -37,14 +39,30 @@ fetch(FORUM_API)
     isLoading = false;
   });
 
-const displayTopicList = (topicList) => {
+const displayTopicList = (topicList, users) => {
   topicList
     .filter((topic) => topic["category_id"] in supportedTopicCategories)
-    .forEach(displayTopic);
+    .forEach((topic) => displayTopic(topic, users));
 };
 
-const displayTopic = (topic) => {
+const displayTopic = (topic, users) => {
   const category = supportedTopicCategories[topic["category_id"]];
+  const posters = topic.posters.map(({ user_id: userId }) => userId);
+
+  let postersAvatars = "";
+  const displayPosterAvatar = (posterId) => {
+    const poster = users.find((user) => user.id == posterId);
+    const avatarTemplate = poster["avatar_template"].replace("{size}", "25");
+    const posterAvatar = avatarTemplate.startsWith("/")
+      ? `${FORUM_AVATARS}/${avatarTemplate}`
+      : avatarTemplate;
+    postersAvatars += `
+      <a href="${FORUM_USER}/${poster.username}" target="_blank">
+        <img src="${posterAvatar}" title="${poster.username}"/>
+      </a>
+    `;
+  };
+  posters.forEach(displayPosterAvatar);
 
   const ifSummaryDisplay = () => {
     let summary = "";
@@ -63,20 +81,27 @@ const displayTopic = (topic) => {
   <tr> 
     <td>
       <span>
-        <a class='post-title' href='${FORUM_TOPIC}/${topic.slug}' target='_blank'>
+        <a class='post-title' href='${FORUM_TOPIC}/${
+    topic.slug
+  }' target='_blank'>
           ${topic.title}
         </a>
       </span>
       <div class='post-category'>
-        <a class='${category.name}' href='${FORUM_CATEGORY}/${category.name}' target='_blank'>
+        <a class='${category.name}' href='${FORUM_CATEGORY}/${
+    category.name
+  }' target='_blank'>
           ${category.longName}
         </a>
       </div>
       ${ifSummaryDisplay()}
     </td>
-    <td></td>
-    <td></td>
-    <td></td>
+    <td class="posters">
+      <div class="postersAvatars">${postersAvatars}</div>
+    </td>
+    <td class="replies"></td>
+    <td class="views"></td>
+    <td class="activity"></td>
   </tr>`;
   postsContainer.innerHTML += post;
 };

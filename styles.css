@@ -104,13 +104,13 @@ table {
 }
 
 th {
-  font-size: 24px;
+  font-size: 22px;
   font-weight: 300;
 }
 
 thead {
   border-bottom: 1px solid var(--primary-color);
-  line-height: 40px;
+  line-height: 60px;
 }
 
 tbody > tr {
@@ -151,8 +151,19 @@ a {
 }
 
 .topics {
-  width: 70%;
+  width: 60%;
   text-align: left;
+}
+
+.posters {
+  width: 15%;
+}
+
+.postersAvatars {
+  display: flex;
+  gap: 7px;
+  justify-content: flex-start;
+  flex-wrap: wrap;
 }
 
 .views,
