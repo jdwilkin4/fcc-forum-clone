@@ -27,9 +27,9 @@ fetch(FORUM_API)
     forumData = data;
     console.log("success");
     console.log(forumData);
-    const topics = forumData["topic_list"].topics;
+    const posts = forumData["topic_list"].topics;
     const users = forumData["users"];
-    displayTopicList(topics, users);
+    displayPostList(posts, users);
   })
   .catch((error) => {
     isError = true;
@@ -39,15 +39,15 @@ fetch(FORUM_API)
     isLoading = false;
   });
 
-const displayTopicList = (topicList, users) => {
-  topicList
-    .filter((topic) => topic["category_id"] in supportedTopicCategories)
-    .forEach((topic) => displayTopic(topic, users));
+const displayPostList = (postList, users) => {
+  postList
+    .filter((post) => post["category_id"] in supportedTopicCategories)
+    .forEach((post) => displayPost(post, users));
 };
 
-const displayTopic = (topic, users) => {
-  const category = supportedTopicCategories[topic["category_id"]];
-  const posters = topic.posters.map(({ user_id: userId }) => userId);
+const displayPost = (post, users) => {
+  const category = supportedTopicCategories[post["category_id"]];
+  const posters = post.posters.map(({ user_id: userId }) => userId);
 
   let postersAvatars = "";
   const displayPosterAvatar = (posterId) => {
@@ -66,25 +66,25 @@ const displayTopic = (topic, users) => {
 
   const ifSummaryDisplay = () => {
     let summary = "";
-    if (topic["has_summary"]) {
+    if (post["has_summary"]) {
       summary = `
       <p class='post-summary'>
-        ${topic.excerpt}
-        <a class='post-read-more' href='${FORUM_TOPIC}/${topic.slug}' target='_blank'>read more</a>
+        ${post.excerpt}
+        <a class='post-read-more' href='${FORUM_TOPIC}/${post.slug}' target='_blank'>read more</a>
       </p>
       `;
     }
     return summary;
   };
 
-  let post = `
+  let postRow = `
   <tr> 
     <td>
       <span>
         <a class='post-title' href='${FORUM_TOPIC}/${
-    topic.slug
+    post.slug
   }' target='_blank'>
-          ${topic.title}
+          ${post.title}
         </a>
       </span>
       <div class='post-category'>
@@ -103,7 +103,7 @@ const displayTopic = (topic, users) => {
     <td class="views"></td>
     <td class="activity"></td>
   </tr>`;
-  postsContainer.innerHTML += post;
+  postsContainer.innerHTML += postRow;
 };
 
 copyright.innerText = new Date().getFullYear();
