@@ -36,6 +36,7 @@ fetch(FORUM_API)
   .finally(() => {
     isLoading = false;
   });
+console.log(forumData);
 
 const displayPostList = (postList) => {
   postList
@@ -59,6 +60,24 @@ const displayPost = (post) => {
     return summary;
   };
 
+  const displayRecentActivity = () => {
+    const bumpedAt = new Date(post.bumped_at);
+    const timeDifference = Date.now() - bumpedAt.getTime();
+    const seconds = timeDifference / 1000;
+    const minutes = seconds / 60;
+    const hours = minutes / 60;
+    const days = hours / 24;
+
+    if (seconds < 60) return "1m";
+    if (minutes < 60) return Math.round(minutes) + "m";
+    if (hours < 24) return Math.round(hours) + "h";
+    if (days < 30) return Math.round(days) + "d";
+    return new Intl.DateTimeFormat("default", {
+      month: "short",
+      day: "numeric",
+    }).format(bumpedAt.getTime()); // ex: Nov 15
+  };
+
   let postRow = `
   <tr> 
     <td>
@@ -78,9 +97,9 @@ const displayPost = (post) => {
       </div>
       ${ifSummaryDisplay()}
     </td>
-    <td></td>
-    <td></td>
-    <td></td>
+    <td class='post-statistic'></td>
+    <td class='post-statistic'></td>
+    <td class='post-statistic'>${displayRecentActivity()}</td>
   </tr>`;
   postsContainer.innerHTML += postRow;
 };

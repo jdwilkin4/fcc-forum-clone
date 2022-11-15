@@ -150,6 +150,10 @@ a {
   text-decoration: underline;
 }
 
+.post-statistic {
+  text-align: center;
+}
+
 .topics {
   width: 70%;
   text-align: left;
