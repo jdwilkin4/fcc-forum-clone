@@ -5,7 +5,7 @@ import {
   FORUM_API,
 } from "./constants.js";
 
-import { supportedTopicCategories, displayRecentActivity } from "./helpers.js";
+import { supportedTopicCategories, formatDateDiff } from "./helpers.js";
 
 const copyright = document.getElementById("copyright");
 const postsContainer = document.getElementById("posts-container");
