@@ -11,9 +11,8 @@ export const supportedTopicCategories = {
   3: { longName: "Contributors", name: "contributors" },
 };
 
-export const displayRecentActivity = (bumpedAt) => {
-  const bumpDate = new Date(bumpedAt);
-  const timeDifference = Date.now() - bumpDate.getTime();
+export const formatDateDiff = (recent, old) => {
+  const timeDifference = new Date(recent) - new Date(old);
   const seconds = timeDifference / 1000;
   const minutes = seconds / 60;
   const hours = minutes / 60;
