@@ -81,7 +81,7 @@ const displayPost = (post) => {
     </td>
     <td class='post-statistic'></td>
     <td class='post-statistic'></td>
-    <td class='post-statistic'>${displayRecentActivity(post.bumped_at)}</td>
+    <td class='post-statistic'>${formatDateDiff(Date.now(), post.bumped_at)}</td>
   </tr>`;
   postsContainer.innerHTML += postRow;
 };
