@@ -58,7 +58,7 @@ const displayPost = (post, users) => {
       : avatarTemplate;
     postersAvatars += `
       <a href="${FORUM_USER}/${poster.username}" target="_blank">
-        <img src="${posterAvatar}" title="${poster.username}"/>
+        <img src="${posterAvatar}" title="${poster.username}" alt="Open ${poster.username}'s profile" width="25" height="25" />
       </a>
     `;
   };
