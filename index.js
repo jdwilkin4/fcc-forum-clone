@@ -6,7 +6,7 @@ import {
   FORUM_USER,
 } from "./constants.js";
 
-import { supportedTopicCategories } from "./helpers.js";
+import { supportedTopicCategories, formatDateDiff } from "./helpers.js";
 
 const copyright = document.getElementById("copyright");
 const postsContainer = document.getElementById("posts-container");
@@ -36,6 +36,7 @@ fetch(FORUM_API)
   .finally(() => {
     isLoading = false;
   });
+console.log(forumData);
 
 const displayPostList = () => {
   forumData["topic_list"].topics
@@ -78,29 +79,30 @@ const displayPost = (post) => {
 
   let postRow = `
   <tr> 
-    <td>
+    <td class="post-topic">
       <span>
-        <a class='post-title' href='${FORUM_TOPIC}/${
-    post.slug
-  }' target='_blank'>
+        <a class='post-title'
+           href='${FORUM_TOPIC}/${post.slug}'
+           target='_blank'>
           ${post.title}
         </a>
       </span>
       <div class='post-category'>
-        <a class='${category.name}' href='${FORUM_CATEGORY}/${
-    category.name
-  }' target='_blank'>
+        <a 
+          class='${category.name}'
+          href='${FORUM_CATEGORY}/${category.name}'
+          target='_blank'>
           ${category.longName}
         </a>
       </div>
       ${ifSummaryDisplay()}
     </td>
-    <td class="posters">
+    <td class="post-posters">
       <div class="postersAvatars">${postersAvatars}</div>
     </td>
-    <td class="replies"></td>
-    <td class="views"></td>
-    <td class="activity"></td>
+    <td class="post-replies"></td>
+    <td class="post-views"></td>
+    <td class="post-activity">${formatDateDiff(Date.now(), post.bumped_at)}</td>
   </tr>`;
   postsContainer.innerHTML += postRow;
 };

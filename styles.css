@@ -9,7 +9,7 @@
 }
 
 :root {
-  --primary-background: #2a2a40;
+  --primary-background: #313146;
   --primary-color: #f5f6f7;
   --logo-background: #0a0a23;
   --salmon: #f0aea9;
@@ -116,6 +116,7 @@ thead {
 tbody > tr {
   font-size: 20px;
   border-bottom: 1px solid var(--border-color);
+  text-align: center;
 }
 
 td {
@@ -128,6 +129,10 @@ a {
 
 .post-title {
   color: var(--primary-text);
+}
+
+.post-topic {
+  text-align: left;
 }
 
 .post-category {
@@ -153,10 +158,15 @@ a {
 .topics {
   width: 60%;
   text-align: left;
+  padding-left: 10px;
 }
 
 .posters {
   width: 15%;
+}
+
+.activity {
+  padding-right: 10px;
 }
 
 .postersAvatars {
@@ -167,18 +177,22 @@ a {
 }
 
 .views,
-.activity {
+.post-views,
+.activity,
+.post-activity {
   display: none;
 }
 
-@media (min-width: 768px) {
-  .activity {
+@media (min-width: 992px) {
+  .views,
+  .post-views {
     display: table-cell;
   }
 }
 
-@media (min-width: 992px) {
-  .views {
+@media (min-width: 768px) {
+  .activity,
+  .post-activity {
     display: table-cell;
   }
 }
