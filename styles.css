@@ -9,7 +9,7 @@
 }
 
 :root {
-  --primary-background: #2a2a40;
+  --primary-background: #313146;
   --primary-color: #f5f6f7;
   --logo-background: #0a0a23;
   --salmon: #f0aea9;
@@ -131,6 +131,10 @@ a {
   color: var(--primary-text);
 }
 
+.post-topic {
+  text-align: left;
+}
+
 .post-category {
   display: flex;
   margin-top: 2px;
@@ -154,10 +158,15 @@ a {
 .topics {
   width: 60%;
   text-align: left;
+  padding-left: 10px;
 }
 
 .posters {
   width: 15%;
+}
+
+.activity {
+  padding-right: 10px;
 }
 
 .postersAvatars {
@@ -168,18 +177,22 @@ a {
 }
 
 .views,
-.activity {
+.post-views,
+.activity,
+.post-activity {
   display: none;
 }
 
-@media (min-width: 768px) {
-  .activity {
+@media (min-width: 992px) {
+  .views,
+  .post-views {
     display: table-cell;
   }
 }
 
-@media (min-width: 992px) {
-  .views {
+@media (min-width: 768px) {
+  .activity,
+  .post-activity {
     display: table-cell;
   }
 }
