@@ -22,15 +22,15 @@ export const formatDateDiff = (recent, old) => {
   if (minutes < 60) return Math.round(minutes) + "m";
   if (hours < 24) return Math.round(hours) + "h";
   if (days < 30) return Math.round(days) + "d";
-  if (bumpDate.getFullYear() != new Date(Date.now()).getFullYear()) {
+  if (old.getFullYear() != new Date(Date.now()).getFullYear()) {
     const formattedDate = new Intl.DateTimeFormat("default", {
       month: "short",
       year: "2-digit",
-    }).format(bumpDate.getTime());
+    }).format(old.getTime());
     return formattedDate.substring(0, 3) + " '" + formattedDate.substring(4, 6);
   }
   return new Intl.DateTimeFormat("default", {
     month: "short",
     day: "numeric",
-  }).format(bumpDate.getTime()); // ex: Nov 15
+  }).format(old.getTime()); // ex: Nov 15
 };
