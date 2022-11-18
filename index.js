@@ -6,7 +6,7 @@ import {
   FORUM_USER,
 } from "./constants.js";
 
-import { supportedTopicCategories } from "./helpers.js";
+import { supportedTopicCategories, formatDateDiff } from "./helpers.js";
 
 const copyright = document.getElementById("copyright");
 const postsContainer = document.getElementById("posts-container");
@@ -36,6 +36,7 @@ fetch(FORUM_API)
   .finally(() => {
     isLoading = false;
   });
+console.log(forumData);
 
 const displayPostList = () => {
   forumData["topic_list"].topics
@@ -100,7 +101,7 @@ const displayPost = (post) => {
     </td>
     <td class="replies"></td>
     <td class="views"></td>
-    <td class="activity"></td>
+    <td class="activity">${formatDateDiff(Date.now(), post.bumped_at)}</td>
   </tr>`;
   postsContainer.innerHTML += postRow;
 };
