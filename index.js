@@ -3,6 +3,7 @@ import {
   FORUM_CATEGORY,
   FORUM_AVATARS,
   FORUM_API,
+  FORUM_USER,
 } from "./constants.js";
 
 import { supportedTopicCategories } from "./helpers.js";
@@ -26,8 +27,7 @@ fetch(FORUM_API)
     forumData = data;
     console.log("success");
     console.log(forumData);
-    const posts = forumData["topic_list"].topics;
-    displayPostList(posts);
+    displayPostList();
   })
   .catch((error) => {
     isError = true;
@@ -37,14 +37,31 @@ fetch(FORUM_API)
     isLoading = false;
   });
 
-const displayPostList = (postList) => {
-  postList
+const displayPostList = () => {
+  forumData["topic_list"].topics
     .filter((post) => post["category_id"] in supportedTopicCategories)
     .forEach(displayPost);
 };
 
 const displayPost = (post) => {
   const category = supportedTopicCategories[post["category_id"]];
+  const posters = post.posters.map(({ user_id: userId }) => userId);
+  const users = forumData["users"];
+
+  let postersAvatars = "";
+  const displayPosterAvatar = (posterId) => {
+    const poster = users.find((user) => user.id == posterId);
+    const avatarTemplate = poster["avatar_template"].replace("{size}", "25");
+    const posterAvatar = avatarTemplate.startsWith("/")
+      ? `${FORUM_AVATARS}/${avatarTemplate}`
+      : avatarTemplate;
+    postersAvatars += `
+      <a href="${FORUM_USER}/${poster.username}" target="_blank">
+        <img src="${posterAvatar}" title="${poster.username}" alt="Open ${poster.username}'s profile" width="25" height="25" />
+      </a>
+    `;
+  };
+  posters.forEach(displayPosterAvatar);
 
   const ifSummaryDisplay = () => {
     let summary = "";
@@ -78,9 +95,12 @@ const displayPost = (post) => {
       </div>
       ${ifSummaryDisplay()}
     </td>
-    <td></td>
-    <td></td>
-    <td></td>
+    <td class="posters">
+      <div class="postersAvatars">${postersAvatars}</div>
+    </td>
+    <td class="replies"></td>
+    <td class="views"></td>
+    <td class="activity"></td>
   </tr>`;
   postsContainer.innerHTML += postRow;
 };
