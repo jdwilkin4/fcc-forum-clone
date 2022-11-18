@@ -12,7 +12,9 @@ export const supportedTopicCategories = {
 };
 
 export const formatDateDiff = (recent, old) => {
-  const timeDifference = new Date(recent) - new Date(old);
+  old = new Date(old);
+  recent = new Date(recent);
+  const timeDifference = recent - old;
   const seconds = timeDifference / 1000;
   const minutes = seconds / 60;
   const hours = minutes / 60;
