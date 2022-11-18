@@ -27,9 +27,7 @@ fetch(FORUM_API)
     forumData = data;
     console.log("success");
     console.log(forumData);
-    const posts = forumData["topic_list"].topics;
-    const users = forumData["users"];
-    displayPostList(posts, users);
+    displayPostList();
   })
   .catch((error) => {
     isError = true;
@@ -39,15 +37,16 @@ fetch(FORUM_API)
     isLoading = false;
   });
 
-const displayPostList = (postList, users) => {
-  postList
+const displayPostList = () => {
+  forumData["topic_list"].topics
     .filter((post) => post["category_id"] in supportedTopicCategories)
-    .forEach((post) => displayPost(post, users));
+    .forEach(displayPost);
 };
 
-const displayPost = (post, users) => {
+const displayPost = (post) => {
   const category = supportedTopicCategories[post["category_id"]];
   const posters = post.posters.map(({ user_id: userId }) => userId);
+  const users = forumData["users"];
 
   let postersAvatars = "";
   const displayPosterAvatar = (posterId) => {
