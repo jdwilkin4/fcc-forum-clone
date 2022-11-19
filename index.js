@@ -48,6 +48,22 @@ const displayPost = (post) => {
   const category = supportedTopicCategories[post["category_id"]];
   const posters = post.posters.map(({ user_id: userId }) => userId);
   const users = forumData["users"];
+  
+  const postsCount = forumData["topic_list"]["topics"];
+ 
+ // solution 1
+  const getVal = postsCount.map(x => ({posts_count: x["posts_count"]}));
+  const getRes = getVal.map(Object.values)
+
+ // solution 2
+  function select(show){
+    const {title, posts_count} = show;
+    return {title, posts_count}
+  }
+  const newEpi = postsCount.map(select)
+
+  
+  console.log(newEpi)
 
   let postersAvatars = "";
   const displayPosterAvatar = (posterId) => {
@@ -100,7 +116,7 @@ const displayPost = (post) => {
     <td class="post-posters">
       <div class="postersAvatars">${postersAvatars}</div>
     </td>
-    <td class="post-replies"></td>
+    <td class="post-replies">${getRes}</td>
     <td class="post-views"></td>
     <td class="post-activity">${formatDateDiff(Date.now(), post.bumped_at)}</td>
   </tr>`;
