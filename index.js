@@ -100,7 +100,7 @@ const displayPost = (post) => {
     <td class="post-posters">
       <div class="postersAvatars">${postersAvatars}</div>
     </td>
-    <td class="post-replies"></td>
+    <td class="post-replies">${post.posts_count-1}</td>
     <td class="post-views">${formatLargeNumber(post.views)}</td>
     <td class="post-activity">${formatDateDiff(Date.now(), post.bumped_at)}</td>
   </tr>`;
