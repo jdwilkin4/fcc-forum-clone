@@ -36,3 +36,16 @@ export const formatDateDiff = (recent, old) => {
     day: "numeric",
   }).format(old.getTime()); // ex: Nov 15
 };
+
+export function formatLargeNumber(n) {
+  let s = "";
+  if (n < 1000) {
+    s = n;
+  } else if (n >= 1000 && n < 1000000) {
+    s = (Math.round(n)/1000).toFixed(1) + "k"
+  } else if (n >= 1000000) {
+    s = (Math.round(n)/1000000).toFixed(1) + "M"
+  };
+  return s
+};
+
