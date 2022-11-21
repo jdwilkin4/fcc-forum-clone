@@ -103,9 +103,20 @@ table {
   border-collapse: collapse;
 }
 
-th {
+th button {
   font-size: 22px;
   font-weight: 300;
+  font-family: "Poppins", sans-serif;
+  background-color: var(--primary-background);
+  color: var(--primary-color);
+  padding: 0.25em 0.75em;
+  border: none;
+  transition: 0.5s background-color;
+  cursor: pointer;
+}
+
+th button:hover {
+  background-color: rgba(209, 209, 209, 0.3);
 }
 
 thead {
