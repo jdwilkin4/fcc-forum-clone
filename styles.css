@@ -22,7 +22,7 @@
   --coral: #f28373;
   --blue-green: #5eafa0;
   --border-color: #3c3b48;
-  --primary-text: rgb(209, 209, 209);
+  --primary-text: #d1d1d1;
   --dark-text: #000;
 }
 
@@ -112,6 +112,7 @@ th button {
   padding: 0.25em 0.75em;
   border: none;
   transition: 0.5s background-color;
+  cursor: pointer;
 }
 
 th button:hover {
