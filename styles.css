@@ -22,7 +22,7 @@
   --coral: #f28373;
   --blue-green: #5eafa0;
   --border-color: #3c3b48;
-  --primary-text: #d1d1d1;
+  --primary-text: rgb(209, 209, 209);
   --dark-text: #000;
 }
 
@@ -103,9 +103,19 @@ table {
   border-collapse: collapse;
 }
 
-th {
+th button {
   font-size: 22px;
   font-weight: 300;
+  font-family: "Poppins", sans-serif;
+  background-color: var(--primary-background);
+  color: var(--primary-color);
+  padding: 0.25em 0.75em;
+  border: none;
+  transition: 0.5s background-color;
+}
+
+th button:hover {
+  background-color: rgba(209, 209, 209, 0.3);
 }
 
 thead {
