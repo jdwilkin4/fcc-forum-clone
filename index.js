@@ -100,7 +100,7 @@ const displayPost = (post) => {
     <td class="post-posters">
       <div class="postersAvatars">${postersAvatars}</div>
     </td> 
-    <td class="post-replies">${post.posts_count-1}</td>
+    <td class="post-replies">${post.posts_count - 1}</td>
     <td class="post-views"></td>
     <td class="post-activity">${formatDateDiff(Date.now(), post.bumped_at)}</td>
   </tr>`;
@@ -108,3 +108,12 @@ const displayPost = (post) => {
 };
 
 copyright.innerText = new Date().getFullYear();
+
+let sortBtns = document.getElementsByName("sort");
+for (let btn of sortBtns) {
+  btn.addEventListener("click", handleSortBtnClick);
+}
+
+function handleSortBtnClick(e) {
+  console.log(e.target.value);
+}
