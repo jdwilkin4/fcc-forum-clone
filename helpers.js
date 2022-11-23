@@ -36,3 +36,13 @@ export const formatDateDiff = (recent, old) => {
     day: "numeric",
   }).format(old.getTime()); // ex: Nov 15
 };
+
+export function formatLargeNumber(num,decimalPoint) {
+  if (num == 0) {return '0'};
+  const k = 1000,
+      dm = decimalPoint || 2,
+      sizes = ['', 'k', 'M'],
+      i = Math.floor(Math.log(num) / Math.log(k));
+  const a = parseFloat((num / Math.pow(k, i))).toFixed(8).slice(0,dm-8).replace(/\.0*$/,"") + sizes[i]; 
+    return a.toString()
+}
