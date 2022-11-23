@@ -116,11 +116,11 @@ th button {
   padding: 0.25em 0.75em;
   border: none;
   transition: 0.5s background-color;
-  cursor: pointer;
 }
 
 th button:hover {
   background-color: rgba(209, 209, 209, 0.3);
+  cursor: pointer;
 }
 
 thead {
