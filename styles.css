@@ -103,9 +103,13 @@ table {
   border-collapse: collapse;
 }
 
+th,
 th button {
   font-size: 22px;
   font-weight: 300;
+}
+
+th button {
   font-family: "Poppins", sans-serif;
   background-color: var(--primary-background);
   color: var(--primary-color);

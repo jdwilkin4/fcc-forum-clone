@@ -10,6 +10,7 @@ import { supportedTopicCategories, formatDateDiff } from "./helpers.js";
 
 const copyright = document.getElementById("copyright");
 const postsContainer = document.getElementById("posts-container");
+const sortBtns = document.getElementsByName("sort");
 
 let isLoading = true;
 let isError = false;
@@ -109,10 +110,7 @@ const displayPost = (post) => {
 
 copyright.innerText = new Date().getFullYear();
 
-let sortBtns = document.getElementsByName("sort");
-for (let btn of sortBtns) {
-  btn.addEventListener("click", handleSortBtnClick);
-}
+sortBtns.forEach((btn) => btn.addEventListener("click", handleSortBtnClick));
 
 function handleSortBtnClick(e) {
   console.log(e.target.value);
