@@ -37,12 +37,20 @@ export const formatDateDiff = (recent, old) => {
   }).format(old.getTime()); // ex: Nov 15
 };
 
-export function formatLargeNumber(num,decimalPoint) {
-  if (num == 0) {return '0'};
-  const k = 1000,
-      dm = decimalPoint || 2,
-      sizes = ['', 'k', 'M'],
-      i = Math.floor(Math.log(num) / Math.log(k));
-  const a = parseFloat((num / Math.pow(k, i))).toFixed(8).slice(0,dm-8).replace(/\.0*$/,"") + sizes[i]; 
-    return a.toString()
+export function formatLargeNumber(n) {
+  let postfix = "", s = "";
+  if (n > 999 && n < 1000000) {
+      n = n / 1000
+      postfix = "k";
+  } else if (n >= 1000000) {
+      n = n / 1000000
+      postfix = "M";
+  }
+  let temp = String(n).split(".");
+  s += temp[0];
+  if (temp.length > 1 && temp[1][0] !== "0") {
+      s += "." + temp[1][0];
+  }
+  s += postfix;
+  return s;
 }
