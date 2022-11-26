@@ -10,6 +10,7 @@ import { supportedTopicCategories, formatDateDiff, formatLargeNumber } from "./h
 
 const copyright = document.getElementById("copyright");
 const postsContainer = document.getElementById("posts-container");
+const sortBtns = document.getElementsByName("sort");
 
 let isLoading = true;
 let isError = false;
@@ -100,7 +101,7 @@ const displayPost = (post) => {
     <td class="post-posters">
       <div class="postersAvatars">${postersAvatars}</div>
     </td>
-    <td class="post-replies">${post.posts_count-1}</td>
+    <td class="post-replies">${post.posts_count - 1}</td>
     <td class="post-views">${formatLargeNumber(post.views)}</td>
     <td class="post-activity">${formatDateDiff(Date.now(), post.bumped_at)}</td>
   </tr>`;
@@ -108,3 +109,9 @@ const displayPost = (post) => {
 };
 
 copyright.innerText = new Date().getFullYear();
+
+sortBtns.forEach((btn) => btn.addEventListener("click", handleSortBtnClick));
+
+function handleSortBtnClick(e) {
+  console.log(e.target.value);
+}

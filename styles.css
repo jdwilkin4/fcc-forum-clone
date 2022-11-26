@@ -103,6 +103,7 @@ table {
   border-collapse: collapse;
 }
 
+th,
 th button {
   font-size: 22px;
   font-weight: 300;
@@ -111,17 +112,20 @@ th button {
   color: var(--primary-color);
   padding: 0.25em 0.75em;
   border: none;
+}
+
+th button {
   transition: 0.5s background-color;
   cursor: pointer;
 }
 
 th button:hover {
   background-color: rgba(209, 209, 209, 0.3);
+  cursor: pointer;
 }
 
 thead {
   border-bottom: 1px solid var(--primary-color);
-  line-height: 60px;
 }
 
 tbody > tr {
