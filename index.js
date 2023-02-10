@@ -6,14 +6,21 @@ import {
   FORUM_USER,
 } from "./constants.js";
 
-import { supportedTopicCategories, formatDateDiff } from "./helpers.js";
+import {
+  supportedTopicCategories,
+  formatDateDiff,
+  formatLargeNumber,
+} from "./helpers.js";
 
 const copyright = document.getElementById("copyright");
 const postsContainer = document.getElementById("posts-container");
+const sortBtns = document.getElementsByName("sort");
+const categoryBtns = document.getElementById("filter-btns");
 
 let isLoading = true;
 let isError = false;
 let forumData = null;
+let categories = new Map();
 
 // Fetch FCC forum latest data
 fetch(FORUM_API)
@@ -28,6 +35,7 @@ fetch(FORUM_API)
     console.log("success");
     console.log(forumData);
     displayPostList();
+    displayCategories();
   })
   .catch((error) => {
     isError = true;
@@ -99,12 +107,45 @@ const displayPost = (post) => {
     </td>
     <td class="post-posters">
       <div class="postersAvatars">${postersAvatars}</div>
-    </td> 
-    <td class="post-replies">${post.posts_count-1}</td>
-    <td class="post-views"></td>
+    </td>
+    <td class="post-replies">${post.posts_count - 1}</td>
+    <td class="post-views">${formatLargeNumber(post.views)}</td>
     <td class="post-activity">${formatDateDiff(Date.now(), post.bumped_at)}</td>
   </tr>`;
   postsContainer.innerHTML += postRow;
 };
 
 copyright.innerText = new Date().getFullYear();
+
+sortBtns.forEach((btn) => btn.addEventListener("click", handleSortBtnClick));
+
+function handleSortBtnClick(e) {
+  console.log(e.target.value);
+}
+
+/**
+ * Get categories of currently displayed topics
+ * and display a button for each category with its respective count
+ */
+function displayCategories() {
+  // get categories and their counts
+  forumData.topic_list.topics.forEach((topic) => {
+    if (categories.has(topic.category_id)) {
+      categories.set(topic.category_id, categories.get(topic.category_id) + 1);
+      // make sure it only adds those categories we support
+    } else if (topic.category_id in supportedTopicCategories) {
+      categories.set(topic.category_id, 1);
+    }
+  });
+  // create the buttons
+  categories.forEach((value, key) => {
+    categoryBtns.innerHTML += `
+    <button
+         name="filter-button" 
+         value=${key}
+         class=${supportedTopicCategories[key].name}
+         >
+         ${supportedTopicCategories[key].longName} (${value})
+    </button>`;
+  });
+}
