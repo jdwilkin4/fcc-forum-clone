@@ -113,6 +113,7 @@ const displayPost = (post) => {
     <td class="post-activity">${formatDateDiff(Date.now(), post.bumped_at)}</td>
   </tr>`;
   postsContainer.innerHTML += postRow;
+  document.getElementById("footer").style.display = "block";
 };
 
 copyright.innerText = new Date().getFullYear();
