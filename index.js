@@ -35,7 +35,7 @@ fetch(FORUM_API)
     console.log("success");
     console.log(forumData);
     displayPostList();
-    displayCategories();
+    // displayCategories();
   })
   .catch((error) => {
     isError = true;
