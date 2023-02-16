@@ -36,6 +36,7 @@ fetch(FORUM_API)
     console.log(forumData);
     displayPostList();
     displayCategories();
+    displayFooter();
   })
   .catch((error) => {
     isError = true;
@@ -113,7 +114,6 @@ const displayPost = (post) => {
     <td class="post-activity">${formatDateDiff(Date.now(), post.bumped_at)}</td>
   </tr>`;
   postsContainer.innerHTML += postRow;
-  document.getElementById("footer").style.display = "block";
 };
 
 copyright.innerText = new Date().getFullYear();
@@ -149,4 +149,8 @@ function displayCategories() {
          ${supportedTopicCategories[key].longName} (${value})
     </button>`;
   });
+}
+
+function displayFooter() {
+  document.getElementById("footer").style.display = "block";
 }
