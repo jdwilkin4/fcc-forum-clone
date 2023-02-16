@@ -36,6 +36,7 @@ fetch(FORUM_API)
     console.log(forumData);
     displayPostList();
     displayCategories();
+    displayFooter();
   })
   .catch((error) => {
     isError = true;
@@ -148,4 +149,8 @@ function displayCategories() {
          ${supportedTopicCategories[key].longName} (${value})
     </button>`;
   });
+}
+
+function displayFooter() {
+  document.getElementById("footer").style.display = "block";
 }
