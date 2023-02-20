@@ -152,7 +152,7 @@ function displayCategories() {
 
   //add handleClickFilter to each button
   buttons.forEach(button => {
-    button.onclick = handleClickFilter
+    button.addEventListener("click", handleClickFilter)
   })
 }
 
