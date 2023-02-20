@@ -146,6 +146,19 @@ function displayCategories() {
          ${supportedTopicCategories[key].longName} (${value})
     </button>`;
   });
+
+  //get the buttons
+  let buttons = document.getElementsByName("filter-button")
+
+  //add handleClickFilter to each button
+  buttons.forEach(button => {
+    button.onclick = handleClickFilter
+  })
+}
+
+//log the id of the button
+const handleClickFilter = (e) => {
+  console.log(e.target.value)
 }
 
 function displayFooter() {
