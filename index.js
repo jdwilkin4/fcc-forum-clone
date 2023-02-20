@@ -61,22 +61,11 @@ function displayPostList() {
   function displayPost(post) {
     const category = supportedTopicCategories[post["category_id"]];
     const posters = post.posters.map(({ user_id: userId }) => userId);
-    const users = forumData["users"];
 
     let postersAvatars = "";
-    const displayPosterAvatar = (posterId) => {
-      const poster = users.find((user) => user.id == posterId);
-      const avatarTemplate = poster["avatar_template"].replace("{size}", "25");
-      const posterAvatar = avatarTemplate.startsWith("/")
-        ? `${FORUM_AVATARS}/${avatarTemplate}`
-        : avatarTemplate;
-      postersAvatars += `
-          <a href="${FORUM_USER}/${poster.username}" target="_blank">
-            <img src="${posterAvatar}" title="${poster.username}" alt="Open ${poster.username}'s profile" width="25" height="25" />
-          </a>
-        `;
-    };
-    posters.forEach(displayPosterAvatar);
+    posters.forEach((userId) => {
+      postersAvatars += getUserAvatarComponent(userId);
+    });
 
     const ifSummaryDisplay = () => {
       let summary = "";
@@ -195,4 +184,21 @@ function setLoadingState() {
 
     title.innerHTML = titleText + dots.join("");
   }
+}
+
+function getUserAvatarComponent(userId) {
+  const users = forumData["users"];
+  const user = users.find((user) => user.id == userId);
+  let userAvatar = "";
+  if (!user) return userAvatar;
+  const avatarTemplate = user["avatar_template"].replace("{size}", "25");
+  const userAvatarURL = avatarTemplate.startsWith("/")
+    ? `${FORUM_AVATARS}/${avatarTemplate}`
+    : avatarTemplate;
+  userAvatar += `
+    <a href="${FORUM_USER}/${user.username}" target="_blank">
+      <img src="${userAvatarURL}" title="${user.username}" alt="Open ${user.username}'s profile" width="25" height="25" />
+    </a>
+  `;
+  return userAvatar;
 }
