@@ -35,7 +35,7 @@ fetch(FORUM_API)
     console.log("success");
     console.log(forumData);
     displayPostList();
-    // displayCategories();
+    displayCategories();
   })
   .catch((error) => {
     isError = true;
@@ -148,4 +148,16 @@ function displayCategories() {
          ${supportedTopicCategories[key].longName} (${value})
     </button>`;
   });
+  
+  let button = document.getElementsByName("filter-button")//get the buttons
+  console.log(button)
+  //for each button append an onclick event
+  for(let i = 0; i < button.length; i++) {
+    button[i].onclick = handleClickFilter
+  }
+}
+
+
+const handleClickFilter = (e) => {
+  console.log(e.target.value)
 }
