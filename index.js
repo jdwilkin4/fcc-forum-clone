@@ -150,14 +150,14 @@ function displayCategories() {
   });
   
   let button = document.getElementsByName("filter-button")//get the buttons
-  console.log(button)
+
   //for each button append an onclick event
   for(let i = 0; i < button.length; i++) {
     button[i].onclick = handleClickFilter
   }
 }
 
-
+//with every click console.log it's value
 const handleClickFilter = (e) => {
   console.log(e.target.value)
 }
