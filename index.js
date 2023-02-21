@@ -167,7 +167,7 @@ function activeCollapsableUserList() {
         1000
       );
     }
-    //clear the mouseover timeout as well as the reference to skip the animation
+    //clear the mouseleave timeout as well as the reference to skip the animation
     clearTimeout(mouseLeaveTimeout);
     mouseLeaveTimeout = null;
   }
