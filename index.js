@@ -17,6 +17,7 @@ const postsContainer = document.getElementById("posts-container");
 const sortBtns = document.getElementsByName("sort");
 const categoryBtns = document.getElementById("filter-btns");
 const title = document.querySelector("main > h1");
+const userListContainer = document.getElementById("online-user-list");
 
 let isLoading = true;
 let isError = false;
@@ -40,8 +41,10 @@ document.addEventListener("DOMContentLoaded", () => {
       forumData = data;
       displayPostList();
       displayCategories();
+      displayUsers();
       displayFooter();
       activateSortBtns();
+      activeCollapsableUserList();
     })
     .catch((error) => {
       isError = true;
@@ -135,6 +138,49 @@ function displayCategories() {
          ${supportedTopicCategories[key].longName} (${value})
     </button>`;
   });
+}
+
+function displayUsers() {
+  const users = forumData["users"];
+  const ids = users.map((user) => user.id);
+
+  let onlineUsersAvatars = `<span>Online (${ids.length}):</span>`;
+  ids.forEach((id) => {
+    onlineUsersAvatars += getUserAvatarComponent(id);
+  });
+
+  userListContainer.innerHTML = onlineUsersAvatars;
+}
+
+//handles the collapsing/expanding transitions
+function activeCollapsableUserList() {
+  let mouseOverTimeout;
+  let mouseLeaveTimeout;
+  userListContainer.addEventListener("mouseover", handleExpand);
+  userListContainer.addEventListener("mouseleave", handleCollapse);
+
+  function handleExpand() {
+    //makes sure that it doesnt create multiple timeouts (because of the mouseover event)
+    if (!mouseOverTimeout) {
+      mouseOverTimeout = setTimeout(
+        () => userListContainer.classList.remove("collapsed"),
+        1000
+      );
+    }
+    //clear the mouseover timeout as well as the reference to skip the animation
+    clearTimeout(mouseLeaveTimeout);
+    mouseLeaveTimeout = null;
+  }
+
+  function handleCollapse() {
+    mouseLeaveTimeout = setTimeout(
+      () => userListContainer.classList.add("collapsed"),
+      1000
+    );
+    //clear the mouseover timeout as well as the reference to skip the animation
+    clearTimeout(mouseOverTimeout);
+    mouseOverTimeout = null;
+  }
 }
 
 function displayFooter() {
