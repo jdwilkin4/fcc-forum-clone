@@ -231,6 +231,7 @@ footer {
 #online-user-list > a {
   margin-left: 0;
   transition: margin-left 1s ease-in-out;
+  transition-delay: 1s;
 }
 
 #online-user-list.collapsed > a:not(:nth-child(-n + 2)) {

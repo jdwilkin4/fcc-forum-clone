@@ -152,35 +152,13 @@ function displayUsers() {
   userListContainer.innerHTML = onlineUsersAvatars;
 }
 
-//handles the collapsing/expanding transitions
 function activeCollapsableUserList() {
-  let mouseOverTimeout;
-  let mouseLeaveTimeout;
-  userListContainer.addEventListener("mouseover", handleExpand);
-  userListContainer.addEventListener("mouseleave", handleCollapse);
-
-  function handleExpand() {
-    //makes sure that it doesnt create multiple timeouts (because of the mouseover event)
-    if (!mouseOverTimeout) {
-      mouseOverTimeout = setTimeout(
-        () => userListContainer.classList.remove("collapsed"),
-        1000
-      );
-    }
-    //clear the mouseleave timeout as well as the reference to skip the animation
-    clearTimeout(mouseLeaveTimeout);
-    mouseLeaveTimeout = null;
-  }
-
-  function handleCollapse() {
-    mouseLeaveTimeout = setTimeout(
-      () => userListContainer.classList.add("collapsed"),
-      1000
-    );
-    //clear the mouseover timeout as well as the reference to skip the animation
-    clearTimeout(mouseOverTimeout);
-    mouseOverTimeout = null;
-  }
+  userListContainer.addEventListener("mouseover", () =>
+    userListContainer.classList.remove("collapsed")
+  );
+  userListContainer.addEventListener("mouseleave", () =>
+    userListContainer.classList.add("collapsed")
+  );
 }
 
 function displayFooter() {
