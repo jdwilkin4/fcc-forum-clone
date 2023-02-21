@@ -17,6 +17,7 @@ const postsContainer = document.getElementById("posts-container");
 const sortBtns = document.getElementsByName("sort");
 const categoryBtns = document.getElementById("filter-btns");
 const title = document.querySelector("main > h1");
+const userListContainer = document.getElementById("online-user-list");
 
 let isLoading = true;
 let isError = false;
@@ -40,6 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
       forumData = data;
       displayPostList();
       displayCategories();
+      displayUsers();
       displayFooter();
       activateSortBtns();
     })
@@ -135,6 +137,18 @@ function displayCategories() {
          ${supportedTopicCategories[key].longName} (${value})
     </button>`;
   });
+}
+
+function displayUsers() {
+  const users = forumData["users"];
+  const ids = users.map((user) => user.id);
+
+  let onlineUsersAvatars = `<span>Online (${ids.length}):</span>`;
+  ids.forEach((id) => {
+    onlineUsersAvatars += getUserAvatarComponent(id);
+  });
+
+  userListContainer.innerHTML = onlineUsersAvatars;
 }
 
 function displayFooter() {

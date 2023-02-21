@@ -217,3 +217,37 @@ footer {
   text-align: center;
   padding: 15px 0;
 }
+
+#online-user-list {
+  width: 85vw;
+  margin: auto;
+  display: flex;
+  flex-wrap: wrap;
+  padding-top: 1.5rem;
+  column-gap: 0.25rem;
+  position: relative;
+}
+
+#online-user-list > a {
+  transition: margin-left 1s ease-in-out;
+  transition-delay: 1s;
+}
+
+#online-user-list > a:not(:nth-child(-n + 2)) {
+  margin-left: -0.75rem;
+}
+
+#online-user-list > span {
+  color: var(--primary-text);
+  margin-right: 0.25rem;
+}
+
+#online-user-list:hover > a {
+  margin-left: 0;
+}
+
+@media (prefers-reduced-motion) {
+  #online-user-list > a {
+    transition: margin-left 2s ease-in-out;
+  }
+}
