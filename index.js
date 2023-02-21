@@ -44,7 +44,6 @@ document.addEventListener("DOMContentLoaded", () => {
       displayUsers();
       displayFooter();
       activateSortBtns();
-      activeCollapsableUserList();
     })
     .catch((error) => {
       isError = true;
@@ -150,15 +149,6 @@ function displayUsers() {
   });
 
   userListContainer.innerHTML = onlineUsersAvatars;
-}
-
-function activeCollapsableUserList() {
-  userListContainer.addEventListener("mouseover", () =>
-    userListContainer.classList.remove("collapsed")
-  );
-  userListContainer.addEventListener("mouseleave", () =>
-    userListContainer.classList.add("collapsed")
-  );
 }
 
 function displayFooter() {

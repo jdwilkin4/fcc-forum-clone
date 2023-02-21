@@ -229,18 +229,21 @@ footer {
 }
 
 #online-user-list > a {
-  margin-left: 0;
   transition: margin-left 1s ease-in-out;
   transition-delay: 1s;
 }
 
-#online-user-list.collapsed > a:not(:nth-child(-n + 2)) {
+#online-user-list > a:not(:nth-child(-n + 2)) {
   margin-left: -0.75rem;
 }
 
 #online-user-list > span {
   color: var(--primary-text);
   margin-right: 0.25rem;
+}
+
+#online-user-list:hover > a {
+  margin-left: 0;
 }
 
 @media (prefers-reduced-motion) {
