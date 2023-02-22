@@ -17,11 +17,13 @@ const postsContainer = document.getElementById("posts-container");
 const sortBtns = document.getElementsByName("sort");
 const categoryBtns = document.getElementById("filter-btns");
 const title = document.querySelector("main > h1");
+const filterButtons = document.getElementsByName("filter-button")
 
 let isLoading = true;
 let isError = false;
 let forumData = null;
 let categories = new Map();
+
 
 // MAIN
 document.addEventListener("DOMContentLoaded", () => {
@@ -40,6 +42,7 @@ document.addEventListener("DOMContentLoaded", () => {
       forumData = data;
       displayPostList();
       displayCategories();
+      addFilterAbility();
       displayFooter();
       activateSortBtns();
     })
@@ -54,14 +57,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // AUXILIARY FUNCTIONS
 function displayPostList() {
-  forumData["topic_list"].topics
+    forumData["topic_list"].topics
     .filter((post) => post["category_id"] in supportedTopicCategories)
     .forEach(displayPost);
 
   function displayPost(post) {
     const category = supportedTopicCategories[post["category_id"]];
     const posters = post.posters.map(({ user_id: userId }) => userId);
-
+    
     let postersAvatars = "";
     posters.forEach((userId) => {
       postersAvatars += getUserAvatarComponent(userId);
@@ -135,19 +138,18 @@ function displayCategories() {
          ${supportedTopicCategories[key].longName} (${value})
     </button>`;
   });
-
-  //get the buttons
-  let buttons = document.getElementsByName("filter-button")
-
-  //add handleClickFilter to each button
-  buttons.forEach(button => {
-    button.addEventListener("click", handleClickFilter)
-  })
 }
 
-//log the id of the button
-const handleClickFilter = (e) => {
-  console.log(e.target.value)
+function addFilterAbility() {
+
+  //add handleClickFilter to each button
+  filterButtons.forEach(button => {
+    button.addEventListener("click", handleClickFilter)
+  })
+  //on press log the value
+  function handleClickFilter(e) {
+    console.log(e.target.value)
+  }
 }
 
 function displayFooter() {
