@@ -42,7 +42,7 @@ document.addEventListener("DOMContentLoaded", () => {
       forumData = data;
       displayPostList();
       displayCategories();
-      FilterTopicsByCategory()
+      filterTopicsByCategory()
       displayUsers();
       displayFooter();
       activateSortBtns();
@@ -141,7 +141,7 @@ function displayCategories() {
   });
 }
 
-function FilterTopicsByCategory() {
+function filterTopicsByCategory() {
   //add handleFilterClick on each button
   categoryButtons.forEach(button => button.addEventListener("click", handleClickFilter))
 
