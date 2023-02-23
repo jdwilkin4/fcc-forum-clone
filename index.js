@@ -24,9 +24,6 @@ let isLoading = true;
 let isError = false;
 let forumData = null;
 let categories = new Map();
-// sorting flags will be null when page first rendered and user hasn't sorted anything
-let sortingBy = null;
-let sortingOrder = null;
 
 // MAIN
 document.addEventListener("DOMContentLoaded", () => {
@@ -58,7 +55,7 @@ document.addEventListener("DOMContentLoaded", () => {
         console.log(typeof formatDateDiff(Date.now(), obj.bumped_at));
       }
       // ^****testing - clean up before submit
-      displayPostList();
+      displayPostList(forumData["topic_list"].topics);
       displayCategories();
       displayUsers();
       displayFooter();
@@ -75,8 +72,8 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // AUXILIARY FUNCTIONS
-function displayPostList() {
-  forumData["topic_list"].topics
+function displayPostList(posts) {
+  posts
     .filter((post) => post["category_id"] in supportedTopicCategories)
     // testing block - delete before submit
     // .sort(
@@ -187,30 +184,70 @@ function displayFooter() {
   document.getElementById("copyright").innerText = new Date().getFullYear();
 }
 
+// sorting utility
+
 function activateSortBtns() {
-  sortBtns.forEach((btn) => btn.addEventListener("click", handleSortBtnClick));
+  sortBtns.forEach((btn) => {
+    btn.addEventListener("click", handleSortBtnClick);
+    btn.sortingState = 0;
+  });
 
   function handleSortBtnClick(e) {
-    // testing block
-    console.log("flags BEFORE click");
-    console.log("sortingBy ", sortingBy);
-    console.log("sortingOrder", sortingOrder);
-    // end of testing block
-    if (sortingBy !== e.target.value) {
-      console.log("CASE button clicked NOT second time in a row");
-      sortingBy = e.target.value;
-      sortingOrder = "descending";
+    let sortedPosts;
+    sortBtns.forEach((btn) => {
+      if (btn.value !== e.target.value) {
+        btn.sortingState = 0;
+      }
+    });
+    postsContainer.innerHTML = "";
+    if (e.target.sortingState === 0 || e.target.sortingState === 2) {
+      e.target.sortingState = 1;
+      if (e.target.value === "replies") {
+        sortedPosts = forumData["topic_list"].topics.sort(
+          (prev, next) => next.posts_count - prev.posts_count
+        );
+      }
+      if (e.target.value === "views") {
+        sortedPosts = forumData["topic_list"].topics.sort(
+          (prev, next) => next.views - prev.views
+        );
+      }
+      if (e.target.value === "activity") {
+        sortedPosts = forumData["topic_list"].topics.sort(
+          (prev, next) =>
+            parseActivityValueForSorting(
+              formatDateDiff(Date.now(), prev.bumped_at)
+            ) -
+            parseActivityValueForSorting(
+              formatDateDiff(Date.now(), next.bumped_at)
+            )
+        );
+      }
     } else {
-      console.log("CASE button clicked second time in a row or more");
-      sortingOrder === null || sortingOrder === "descending"
-        ? (sortingOrder = "ascending")
-        : (sortingOrder = "descending");
+      e.target.sortingState = 2;
+      if (e.target.value === "replies") {
+        sortedPosts = forumData["topic_list"].topics.sort(
+          (prev, next) => prev.posts_count - next.posts_count
+        );
+      }
+      if (e.target.value === "views") {
+        sortedPosts = forumData["topic_list"].topics.sort(
+          (prev, next) => prev.views - next.views
+        );
+      }
+      if (e.target.value === "activity") {
+        sortedPosts = forumData["topic_list"].topics.sort(
+          (prev, next) =>
+            parseActivityValueForSorting(
+              formatDateDiff(Date.now(), next.bumped_at)
+            ) -
+            parseActivityValueForSorting(
+              formatDateDiff(Date.now(), prev.bumped_at)
+            )
+        );
+      }
     }
-    // testing block
-    console.log("flags AFTER click");
-    console.log("sortingBy ", sortingBy);
-    console.log("sortingOrder", sortingOrder);
-    // end of testing block
+    displayPostList(sortedPosts);
   }
 }
 
