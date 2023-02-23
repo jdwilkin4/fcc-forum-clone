@@ -39,6 +39,21 @@ document.addEventListener("DOMContentLoaded", () => {
     })
     .then((data) => {
       forumData = data;
+      // *****testing - clean up before sumbit
+      console.log(forumData.topic_list.topics);
+      // accessing sorting factor for replies
+      // for (let obj of forumData.topic_list.topics) {
+      //   console.log(obj.posts_count);
+      // }
+      // accessing sorting factor for views
+      // for (let obj of forumData.topic_list.topics) {
+      // console.log(obj.views);
+      // }
+      // accessing sorting factor for activity
+      // for (let obj of forumData.topic_list.topics) {
+      //   console.log(obj.bumped_at);
+      // }
+      // ^****testing - clean up before submit
       displayPostList();
       displayCategories();
       displayUsers();
@@ -52,12 +67,16 @@ document.addEventListener("DOMContentLoaded", () => {
     .finally(() => {
       isLoading = false;
     });
+  // console.log(sortBtns);
 });
 
 // AUXILIARY FUNCTIONS
 function displayPostList() {
   forumData["topic_list"].topics
     .filter((post) => post["category_id"] in supportedTopicCategories)
+    // testing block - delete before submit
+    .sort((prevPost, nextPost) => prevPost.views - nextPost.views)
+    // testing block - delete before submit
     .forEach(displayPost);
 
   function displayPost(post) {
