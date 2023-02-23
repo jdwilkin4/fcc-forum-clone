@@ -10,7 +10,6 @@ import {
   supportedTopicCategories,
   formatDateDiff,
   formatLargeNumber,
-  parseActivityValueForSorting,
 } from "./helpers.js";
 
 // GLOBALS
@@ -40,21 +39,6 @@ document.addEventListener("DOMContentLoaded", () => {
     })
     .then((data) => {
       forumData = data;
-      // *****testing - clean up before sumbit
-      console.log(forumData.topic_list.topics);
-      // accessing sorting factor for replies
-      // for (let obj of forumData.topic_list.topics) {
-      //   console.log(obj.posts_count);
-      // }
-      // accessing sorting factor for views
-      // for (let obj of forumData.topic_list.topics) {
-      // console.log(obj.views);
-      // }
-      // accessing sorting factor for activity
-      for (let obj of forumData.topic_list.topics) {
-        console.log(typeof formatDateDiff(Date.now(), obj.bumped_at));
-      }
-      // ^****testing - clean up before submit
       displayPostList(forumData["topic_list"].topics);
       displayCategories();
       displayUsers();
@@ -68,24 +52,12 @@ document.addEventListener("DOMContentLoaded", () => {
     .finally(() => {
       isLoading = false;
     });
-  // console.log(sortBtns);
 });
 
 // AUXILIARY FUNCTIONS
 function displayPostList(posts) {
   posts
     .filter((post) => post["category_id"] in supportedTopicCategories)
-    // testing block - delete before submit
-    // .sort(
-    //   (prevPost, nextPost) =>
-    //     parseActivityValueForSorting(
-    //       formatDateDiff(Date.now(), prevPost.bumped_at)
-    //     ) -
-    //     parseActivityValueForSorting(
-    //       formatDateDiff(Date.now(), nextPost.bumped_at)
-    //     )
-    // )
-    // testing block - delete before submit
     .forEach(displayPost);
 
   function displayPost(post) {
@@ -184,8 +156,6 @@ function displayFooter() {
   document.getElementById("copyright").innerText = new Date().getFullYear();
 }
 
-// sorting utility
-
 function activateSortBtns() {
   sortBtns.forEach((btn) => {
     btn.addEventListener("click", handleSortBtnClick);
@@ -214,13 +184,7 @@ function activateSortBtns() {
       }
       if (e.target.value === "activity") {
         sortedPosts = forumData["topic_list"].topics.sort(
-          (prev, next) =>
-            parseActivityValueForSorting(
-              formatDateDiff(Date.now(), prev.bumped_at)
-            ) -
-            parseActivityValueForSorting(
-              formatDateDiff(Date.now(), next.bumped_at)
-            )
+          (prev, next) => new Date(next.bumped_at) - new Date(prev.bumped_at)
         );
       }
     } else {
@@ -237,13 +201,7 @@ function activateSortBtns() {
       }
       if (e.target.value === "activity") {
         sortedPosts = forumData["topic_list"].topics.sort(
-          (prev, next) =>
-            parseActivityValueForSorting(
-              formatDateDiff(Date.now(), next.bumped_at)
-            ) -
-            parseActivityValueForSorting(
-              formatDateDiff(Date.now(), prev.bumped_at)
-            )
+          (prev, next) => new Date(prev.bumped_at) - new Date(next.bumped_at)
         );
       }
     }
