@@ -55,3 +55,21 @@ export function formatLargeNumber(n) {
   s += postfix;
   return s;
 }
+
+export function parseActivityValueForSorting(str) {
+  // lookup
+  const lookup = {
+    d: 3600,
+    h: 60,
+    m: 1,
+  };
+  return str.split("").reduce((result, elem, index) => {
+    if (index !== str.length - 1) {
+      console.log("should be digit: ", elem);
+      return result + elem;
+    } else {
+      console.log("should be letter", elem);
+      return result * lookup[elem];
+    }
+  }, 0);
+}

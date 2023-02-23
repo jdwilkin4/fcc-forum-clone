@@ -10,6 +10,7 @@ import {
   supportedTopicCategories,
   formatDateDiff,
   formatLargeNumber,
+  parseActivityValueForSorting,
 } from "./helpers.js";
 
 // GLOBALS
@@ -50,9 +51,9 @@ document.addEventListener("DOMContentLoaded", () => {
       // console.log(obj.views);
       // }
       // accessing sorting factor for activity
-      // for (let obj of forumData.topic_list.topics) {
-      //   console.log(obj.bumped_at);
-      // }
+      for (let obj of forumData.topic_list.topics) {
+        console.log(typeof formatDateDiff(Date.now(), obj.bumped_at));
+      }
       // ^****testing - clean up before submit
       displayPostList();
       displayCategories();
@@ -75,7 +76,15 @@ function displayPostList() {
   forumData["topic_list"].topics
     .filter((post) => post["category_id"] in supportedTopicCategories)
     // testing block - delete before submit
-    .sort((prevPost, nextPost) => prevPost.views - nextPost.views)
+    .sort(
+      (prevPost, nextPost) =>
+        parseActivityValueForSorting(
+          formatDateDiff(Date.now(), prevPost.bumped_at)
+        ) -
+        parseActivityValueForSorting(
+          formatDateDiff(Date.now(), nextPost.bumped_at)
+        )
+    )
     // testing block - delete before submit
     .forEach(displayPost);
 
