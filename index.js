@@ -18,6 +18,7 @@ const sortBtns = document.getElementsByName("sort");
 const categoryBtns = document.getElementById("filter-btns");
 const title = document.querySelector("main > h1");
 const userListContainer = document.getElementById("online-user-list");
+const categoryButtons = document.getElementsByName("filter-button");
 
 let isLoading = true;
 let isError = false;
@@ -41,6 +42,7 @@ document.addEventListener("DOMContentLoaded", () => {
       forumData = data;
       displayPostList();
       displayCategories();
+      activateCategoryBtns();
       displayUsers();
       displayFooter();
       activateSortBtns();
@@ -137,6 +139,16 @@ function displayCategories() {
          ${supportedTopicCategories[key].longName} (${value})
     </button>`;
   });
+}
+
+function activateCategoryBtns() {
+  //add handleFilterClick on each button
+  categoryButtons.forEach(button => button.addEventListener("click", handleClickFilter))
+
+  //log the value of each category on press
+  function handleClickFilter(e) {
+    console.log(e.target.value)
+  }
 }
 
 function displayUsers() {
