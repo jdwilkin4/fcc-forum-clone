@@ -57,7 +57,7 @@ export function formatLargeNumber(n) {
 }
 
 export function parseActivityValueForSorting(str) {
-  // lookup
+  //could be written more concise by using slice or string methods
   const lookup = {
     d: 3600,
     h: 60,
@@ -65,10 +65,10 @@ export function parseActivityValueForSorting(str) {
   };
   return str.split("").reduce((result, elem, index) => {
     if (index !== str.length - 1) {
-      console.log("should be digit: ", elem);
+      // console.log("should be digit: ", elem);
       return result + elem;
     } else {
-      console.log("should be letter", elem);
+      // console.log("should be letter", elem);
       return result * lookup[elem];
     }
   }, 0);

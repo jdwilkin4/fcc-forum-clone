@@ -24,6 +24,9 @@ let isLoading = true;
 let isError = false;
 let forumData = null;
 let categories = new Map();
+// sorting flags will be null when page first rendered and user hasn't sorted anything
+let sortingBy = null;
+let sortingOrder = null;
 
 // MAIN
 document.addEventListener("DOMContentLoaded", () => {
@@ -76,15 +79,15 @@ function displayPostList() {
   forumData["topic_list"].topics
     .filter((post) => post["category_id"] in supportedTopicCategories)
     // testing block - delete before submit
-    .sort(
-      (prevPost, nextPost) =>
-        parseActivityValueForSorting(
-          formatDateDiff(Date.now(), prevPost.bumped_at)
-        ) -
-        parseActivityValueForSorting(
-          formatDateDiff(Date.now(), nextPost.bumped_at)
-        )
-    )
+    // .sort(
+    //   (prevPost, nextPost) =>
+    //     parseActivityValueForSorting(
+    //       formatDateDiff(Date.now(), prevPost.bumped_at)
+    //     ) -
+    //     parseActivityValueForSorting(
+    //       formatDateDiff(Date.now(), nextPost.bumped_at)
+    //     )
+    // )
     // testing block - delete before submit
     .forEach(displayPost);
 
@@ -188,7 +191,26 @@ function activateSortBtns() {
   sortBtns.forEach((btn) => btn.addEventListener("click", handleSortBtnClick));
 
   function handleSortBtnClick(e) {
-    console.log(e.target.value);
+    // testing block
+    console.log("flags BEFORE click");
+    console.log("sortingBy ", sortingBy);
+    console.log("sortingOrder", sortingOrder);
+    // end of testing block
+    if (sortingBy !== e.target.value) {
+      console.log("CASE button clicked NOT second time in a row");
+      sortingBy = e.target.value;
+      sortingOrder = "descending";
+    } else {
+      console.log("CASE button clicked second time in a row or more");
+      sortingOrder === null || sortingOrder === "descending"
+        ? (sortingOrder = "ascending")
+        : (sortingOrder = "descending");
+    }
+    // testing block
+    console.log("flags AFTER click");
+    console.log("sortingBy ", sortingBy);
+    console.log("sortingOrder", sortingOrder);
+    // end of testing block
   }
 }
 
