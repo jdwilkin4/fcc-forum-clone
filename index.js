@@ -25,7 +25,6 @@ let isLoading = true;
 let isError = false;
 let forumData = null;
 let categories = new Map();
-let filteredTopics = null;
 
 // MAIN
 document.addEventListener("DOMContentLoaded", () => {
@@ -148,6 +147,8 @@ function activateCategoryBtns() {
   categoryButtons.forEach(button => 
     {button.addEventListener("click", handleClickFilter);
      button.pressed = false})
+
+  let filteredTopics;
   
   function handleClickFilter(e) {
     //if target is pressed 1st time 
