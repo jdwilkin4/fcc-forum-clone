@@ -159,20 +159,20 @@ function displayFooter() {
 function activateSortBtns() {
   sortBtns.forEach((btn) => {
     btn.addEventListener("click", handleSortBtnClick);
-    btn.sortingState = "notSorted";
+    btn.sortingState = null;
   });
 
   function handleSortBtnClick(e) {
     let sortedPosts;
     sortBtns.forEach((btn) => {
       if (btn.value !== e.target.value) {
-        btn.sortingState = "notSorted";
+        btn.sortingState = null;
       }
     });
     let [sortBtn, sortedBy] = [e.target, e.target.value];
     postsContainer.innerHTML = "";
     if (
-      sortBtn.sortingState === "notSorted" ||
+      !sortBtn.sortingState ||
       sortBtn.sortingState === "onEventhInARowClick"
     ) {
       sortBtn.sortingState = "onOddthInARowClick";
