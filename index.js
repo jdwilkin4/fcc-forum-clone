@@ -159,47 +159,51 @@ function displayFooter() {
 function activateSortBtns() {
   sortBtns.forEach((btn) => {
     btn.addEventListener("click", handleSortBtnClick);
-    btn.sortingState = 0;
+    btn.sortingState = "notSorted";
   });
 
   function handleSortBtnClick(e) {
     let sortedPosts;
     sortBtns.forEach((btn) => {
       if (btn.value !== e.target.value) {
-        btn.sortingState = 0;
+        btn.sortingState = "notSorted";
       }
     });
+    let [sortBtn, sortedBy] = [e.target, e.target.value];
     postsContainer.innerHTML = "";
-    if (e.target.sortingState === 0 || e.target.sortingState === 2) {
-      e.target.sortingState = 1;
-      if (e.target.value === "replies") {
+    if (
+      sortBtn.sortingState === "notSorted" ||
+      sortBtn.sortingState === "onEventhInARowClick"
+    ) {
+      sortBtn.sortingState = "onOddthInARowClick";
+      if (sortedBy === "replies") {
         sortedPosts = forumData["topic_list"].topics.sort(
           (prev, next) => next.posts_count - prev.posts_count
         );
       }
-      if (e.target.value === "views") {
+      if (sortedBy === "views") {
         sortedPosts = forumData["topic_list"].topics.sort(
           (prev, next) => next.views - prev.views
         );
       }
-      if (e.target.value === "activity") {
+      if (sortedBy === "activity") {
         sortedPosts = forumData["topic_list"].topics.sort(
           (prev, next) => new Date(next.bumped_at) - new Date(prev.bumped_at)
         );
       }
     } else {
-      e.target.sortingState = 2;
-      if (e.target.value === "replies") {
+      sortBtn.sortingState = "onEventhInARowClick";
+      if (sortedBy === "replies") {
         sortedPosts = forumData["topic_list"].topics.sort(
           (prev, next) => prev.posts_count - next.posts_count
         );
       }
-      if (e.target.value === "views") {
+      if (sortedBy === "views") {
         sortedPosts = forumData["topic_list"].topics.sort(
           (prev, next) => prev.views - next.views
         );
       }
-      if (e.target.value === "activity") {
+      if (sortedBy === "activity") {
         sortedPosts = forumData["topic_list"].topics.sort(
           (prev, next) => new Date(prev.bumped_at) - new Date(next.bumped_at)
         );
