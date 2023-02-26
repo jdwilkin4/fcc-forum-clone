@@ -20,6 +20,7 @@ const title = document.querySelector("main > h1");
 const userListContainer = document.getElementById("online-user-list");
 const categoryButtons = document.getElementsByName("filter-button");
 
+
 let isLoading = true;
 let isError = false;
 let forumData = null;
@@ -40,7 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
     })
     .then((data) => {
       forumData = data;
-      displayPostList();
+      displayPostList(forumData["topic_list"].topics);
       displayCategories();
       activateCategoryBtns();
       displayUsers();
@@ -57,8 +58,8 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // AUXILIARY FUNCTIONS
-function displayPostList() {
-  forumData["topic_list"].topics
+function displayPostList(posts) {
+  posts
     .filter((post) => post["category_id"] in supportedTopicCategories)
     .forEach(displayPost);
 
@@ -142,13 +143,37 @@ function displayCategories() {
 }
 
 function activateCategoryBtns() {
-  //add handleFilterClick on each button
-  categoryButtons.forEach(button => button.addEventListener("click", handleClickFilter))
+  //add handleFilterClick on each button and add a property to keep tracing if is pressed or not
+  categoryButtons.forEach(button => 
+    {button.addEventListener("click", handleClickFilter);
+     button.pressed = false})
 
-  //log the value of each category on press
+  let filteredTopics;
+  
   function handleClickFilter(e) {
-    console.log(e.target.value)
-  }
+    //if target is pressed 1st time 
+    if (e.target.pressed === false) {
+      e.target.pressed = true
+      //loop through all other buttons other than the target to unpress them if pressed
+      for(let i = 0; i < categoryButtons.length; i++) {
+        if (categoryButtons[i].value !== e.target.value){
+          categoryButtons[i].pressed = false
+        }
+      }
+      //filter the appropriate topics
+      filteredTopics = [...forumData["topic_list"].topics.filter(topic => topic.category_id === parseInt(e.target.value))]
+      //clear container of posts
+      postsContainer.innerHTML = ""
+      //return to displayPostList to render new posts
+      displayPostList(filteredTopics)
+    }else{
+      e.target.pressed = false
+      filteredTopics = [...forumData["topic_list"].topics]
+      postsContainer.innerHTML = ""
+      displayPostList(filteredTopics)
+    }
+  
+}
 }
 
 function displayUsers() {
