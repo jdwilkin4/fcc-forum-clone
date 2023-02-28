@@ -159,23 +159,26 @@ function displayFooter() {
 function activateSortBtns() {
   sortBtns.forEach((btn) => {
     btn.addEventListener("click", handleSortBtnClick);
-    btn.sortingState = null;
+    btn.sortingOrder = null;
   });
 
   function handleSortBtnClick(e) {
     let sortedPosts;
     sortBtns.forEach((btn) => {
       if (btn.value !== e.target.value) {
-        btn.sortingState = null;
+        btn.sortingOrder = null;
       }
     });
-    let [sortBtn, sortedBy] = [e.target, e.target.value];
+
+    let sortBtn = e.target;
+    let sortedBy = sortBtn.value;
+    let descendingOrder = 1;
+    let ascendingOrder = 2;
+
     postsContainer.innerHTML = "";
-    if (
-      !sortBtn.sortingState ||
-      sortBtn.sortingState === "onEventhInARowClick"
-    ) {
-      sortBtn.sortingState = "onOddthInARowClick";
+
+    if (!sortBtn.sortingOrder || sortBtn.sortingOrder === ascendingOrder) {
+      sortBtn.sortingOrder = descendingOrder;
       if (sortedBy === "replies") {
         sortedPosts = forumData["topic_list"].topics.sort(
           (prev, next) => next.posts_count - prev.posts_count
@@ -192,7 +195,7 @@ function activateSortBtns() {
         );
       }
     } else {
-      sortBtn.sortingState = "onEventhInARowClick";
+      sortBtn.sortingOrder = ascendingOrder;
       if (sortedBy === "replies") {
         sortedPosts = forumData["topic_list"].topics.sort(
           (prev, next) => prev.posts_count - next.posts_count
