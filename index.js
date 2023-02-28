@@ -20,7 +20,6 @@ const title = document.querySelector("main > h1");
 const userListContainer = document.getElementById("online-user-list");
 const categoryButtons = document.getElementsByName("filter-button");
 
-
 let isLoading = true;
 let isError = false;
 let forumData = null;
@@ -41,7 +40,7 @@ document.addEventListener("DOMContentLoaded", () => {
     })
     .then((data) => {
       forumData = data;
-      displayPostList(forumData["topic_list"].topics);
+      displayPostList(forumData.topic_list.topics);
       displayCategories();
       activateCategoryBtns();
       displayUsers();
@@ -60,11 +59,11 @@ document.addEventListener("DOMContentLoaded", () => {
 // AUXILIARY FUNCTIONS
 function displayPostList(posts) {
   posts
-    .filter((post) => post["category_id"] in supportedTopicCategories)
+    .filter((post) => post.category_id in supportedTopicCategories)
     .forEach(displayPost);
 
   function displayPost(post) {
-    const category = supportedTopicCategories[post["category_id"]];
+    const category = supportedTopicCategories[post.category_id];
     const posters = post.posters.map(({ user_id: userId }) => userId);
 
     let postersAvatars = "";
@@ -74,7 +73,7 @@ function displayPostList(posts) {
 
     const ifSummaryDisplay = () => {
       let summary = "";
-      if (post["has_summary"]) {
+      if (post.has_summary) {
         summary = `
           <p class='post-summary'>
             ${post.excerpt}
@@ -144,40 +143,44 @@ function displayCategories() {
 
 function activateCategoryBtns() {
   //add handleFilterClick on each button and add a property to keep tracing if is pressed or not
-  categoryButtons.forEach(button => 
-    {button.addEventListener("click", handleClickFilter);
-     button.pressed = false})
+  categoryButtons.forEach((button) => {
+    button.addEventListener("click", handleClickFilter);
+    button.pressed = false;
+  });
 
   let filteredTopics;
-  
+
   function handleClickFilter(e) {
-    //if target is pressed 1st time 
+    //if target is pressed 1st time
     if (e.target.pressed === false) {
-      e.target.pressed = true
+      e.target.pressed = true;
       //loop through all other buttons other than the target to unpress them if pressed
-      for(let i = 0; i < categoryButtons.length; i++) {
-        if (categoryButtons[i].value !== e.target.value){
-          categoryButtons[i].pressed = false
+      for (let i = 0; i < categoryButtons.length; i++) {
+        if (categoryButtons[i].value !== e.target.value) {
+          categoryButtons[i].pressed = false;
         }
       }
       //filter the appropriate topics
-      filteredTopics = [...forumData["topic_list"].topics.filter(topic => topic.category_id === parseInt(e.target.value))]
+      filteredTopics = [
+        ...forumData.topic_list.topics.filter(
+          (topic) => topic.category_id === parseInt(e.target.value)
+        ),
+      ];
       //clear container of posts
-      postsContainer.innerHTML = ""
+      postsContainer.innerHTML = "";
       //return to displayPostList to render new posts
-      displayPostList(filteredTopics)
-    }else{
-      e.target.pressed = false
-      filteredTopics = [...forumData["topic_list"].topics]
-      postsContainer.innerHTML = ""
-      displayPostList(filteredTopics)
+      displayPostList(filteredTopics);
+    } else {
+      e.target.pressed = false;
+      filteredTopics = [...forumData.topic_list.topics];
+      postsContainer.innerHTML = "";
+      displayPostList(filteredTopics);
     }
-  
-}
+  }
 }
 
 function displayUsers() {
-  const users = forumData["users"];
+  const users = forumData.users;
   const ids = users.map((user) => user.id);
 
   let onlineUsersAvatars = `<span>Online (${ids.length}):</span>`;
@@ -217,34 +220,34 @@ function activateSortBtns() {
     if (!sortBtn.sortingOrder || sortBtn.sortingOrder === ascendingOrder) {
       sortBtn.sortingOrder = descendingOrder;
       if (sortedBy === "replies") {
-        sortedPosts = forumData["topic_list"].topics.sort(
+        sortedPosts = forumData.topic_list.topics.sort(
           (prev, next) => next.posts_count - prev.posts_count
         );
       }
       if (sortedBy === "views") {
-        sortedPosts = forumData["topic_list"].topics.sort(
+        sortedPosts = forumData.topic_list.topics.sort(
           (prev, next) => next.views - prev.views
         );
       }
       if (sortedBy === "activity") {
-        sortedPosts = forumData["topic_list"].topics.sort(
+        sortedPosts = forumData.topic_list.topics.sort(
           (prev, next) => new Date(next.bumped_at) - new Date(prev.bumped_at)
         );
       }
     } else {
       sortBtn.sortingOrder = ascendingOrder;
       if (sortedBy === "replies") {
-        sortedPosts = forumData["topic_list"].topics.sort(
+        sortedPosts = forumData.topic_list.topics.sort(
           (prev, next) => prev.posts_count - next.posts_count
         );
       }
       if (sortedBy === "views") {
-        sortedPosts = forumData["topic_list"].topics.sort(
+        sortedPosts = forumData.topic_list.topics.sort(
           (prev, next) => prev.views - next.views
         );
       }
       if (sortedBy === "activity") {
-        sortedPosts = forumData["topic_list"].topics.sort(
+        sortedPosts = forumData.topic_list.topics.sort(
           (prev, next) => new Date(prev.bumped_at) - new Date(next.bumped_at)
         );
       }
@@ -290,11 +293,11 @@ function setLoadingState() {
 }
 
 function getUserAvatarComponent(userId) {
-  const users = forumData["users"];
+  const users = forumData.users;
   const user = users.find((user) => user.id == userId);
   let userAvatar = "";
   if (!user) return userAvatar;
-  const avatarTemplate = user["avatar_template"].replace("{size}", "25");
+  const avatarTemplate = user.avatar_template.replace("{size}", "25");
   const userAvatarURL = avatarTemplate.startsWith("/")
     ? `${FORUM_AVATARS}/${avatarTemplate}`
     : avatarTemplate;
