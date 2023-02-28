@@ -194,10 +194,62 @@ function displayFooter() {
 }
 
 function activateSortBtns() {
-  sortBtns.forEach((btn) => btn.addEventListener("click", handleSortBtnClick));
+  sortBtns.forEach((btn) => {
+    btn.addEventListener("click", handleSortBtnClick);
+    btn.sortingOrder = null;
+  });
 
   function handleSortBtnClick(e) {
-    console.log(e.target.value);
+    let sortedPosts;
+    sortBtns.forEach((btn) => {
+      if (btn.value !== e.target.value) {
+        btn.sortingOrder = null;
+      }
+    });
+
+    let sortBtn = e.target;
+    let sortedBy = sortBtn.value;
+    let descendingOrder = 1;
+    let ascendingOrder = 2;
+
+    postsContainer.innerHTML = "";
+
+    if (!sortBtn.sortingOrder || sortBtn.sortingOrder === ascendingOrder) {
+      sortBtn.sortingOrder = descendingOrder;
+      if (sortedBy === "replies") {
+        sortedPosts = forumData["topic_list"].topics.sort(
+          (prev, next) => next.posts_count - prev.posts_count
+        );
+      }
+      if (sortedBy === "views") {
+        sortedPosts = forumData["topic_list"].topics.sort(
+          (prev, next) => next.views - prev.views
+        );
+      }
+      if (sortedBy === "activity") {
+        sortedPosts = forumData["topic_list"].topics.sort(
+          (prev, next) => new Date(next.bumped_at) - new Date(prev.bumped_at)
+        );
+      }
+    } else {
+      sortBtn.sortingOrder = ascendingOrder;
+      if (sortedBy === "replies") {
+        sortedPosts = forumData["topic_list"].topics.sort(
+          (prev, next) => prev.posts_count - next.posts_count
+        );
+      }
+      if (sortedBy === "views") {
+        sortedPosts = forumData["topic_list"].topics.sort(
+          (prev, next) => prev.views - next.views
+        );
+      }
+      if (sortedBy === "activity") {
+        sortedPosts = forumData["topic_list"].topics.sort(
+          (prev, next) => new Date(prev.bumped_at) - new Date(next.bumped_at)
+        );
+      }
+    }
+    displayPostList(sortedPosts);
   }
 }
 
