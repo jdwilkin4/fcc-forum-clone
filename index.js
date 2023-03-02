@@ -24,6 +24,7 @@ let isLoading = true;
 let isError = false;
 let forumData = null;
 let categories = new Map();
+let filteredTopics;
 
 // MAIN
 document.addEventListener("DOMContentLoaded", () => {
@@ -40,7 +41,8 @@ document.addEventListener("DOMContentLoaded", () => {
     })
     .then((data) => {
       forumData = data;
-      displayPostList(forumData.topic_list.topics);
+      filteredTopics = forumData.topic_list.topics
+      displayPostList(filteredTopics);
       displayCategories();
       activateCategoryBtns();
       displayUsers();
@@ -55,6 +57,7 @@ document.addEventListener("DOMContentLoaded", () => {
       isLoading = false;
     });
 });
+
 
 // AUXILIARY FUNCTIONS
 function displayPostList(posts) {
@@ -148,8 +151,6 @@ function activateCategoryBtns() {
     button.pressed = false;
   });
 
-  let filteredTopics;
-
   function handleClickFilter(e) {
     //if target is pressed 1st time
     if (e.target.pressed === false) {
@@ -160,12 +161,15 @@ function activateCategoryBtns() {
           categoryButtons[i].pressed = false;
         }
       }
+
       //filter the appropriate topics
       filteredTopics = [
         ...forumData.topic_list.topics.filter(
           (topic) => topic.category_id === parseInt(e.target.value)
         ),
       ];
+
+      console.log(filteredTopics)
       //clear container of posts
       postsContainer.innerHTML = "";
       //return to displayPostList to render new posts
@@ -203,7 +207,7 @@ function activateSortBtns() {
   });
 
   function handleSortBtnClick(e) {
-    let sortedPosts;
+    
     sortBtns.forEach((btn) => {
       if (btn.value !== e.target.value) {
         btn.sortingOrder = null;
@@ -220,39 +224,59 @@ function activateSortBtns() {
     if (!sortBtn.sortingOrder || sortBtn.sortingOrder === ascendingOrder) {
       sortBtn.sortingOrder = descendingOrder;
       if (sortedBy === "replies") {
-        sortedPosts = forumData.topic_list.topics.sort(
+        filteredTopics = [...filteredTopics.sort(
           (prev, next) => next.posts_count - prev.posts_count
-        );
+        )];
+        forumData.topic_list.topics = [...forumData.topic_list.topics.sort(
+          (a, b) => b.posts_count - a.posts_count
+        )];
+        console.log(forumData.topic_list.topics)
       }
       if (sortedBy === "views") {
-        sortedPosts = forumData.topic_list.topics.sort(
+        filteredTopics = [...filteredTopics.sort(
           (prev, next) => next.views - prev.views
-        );
+        )];
+        forumData.topic_list.topics = [...forumData.topic_list.topics.sort(
+          (a, b) => b.views - a.views
+        )];
       }
       if (sortedBy === "activity") {
-        sortedPosts = forumData.topic_list.topics.sort(
+        filteredTopics = [...filteredTopics.sort(
           (prev, next) => new Date(next.bumped_at) - new Date(prev.bumped_at)
-        );
+        )];
+        forumData.topic_list.topics = [...forumData.topic_list.topics.sort(
+          (a, b) => new Date(b.bumped_at) - new Date(a.bumped_at)
+        )];
       }
     } else {
       sortBtn.sortingOrder = ascendingOrder;
       if (sortedBy === "replies") {
-        sortedPosts = forumData.topic_list.topics.sort(
+        filteredTopics = [...filteredTopics.sort(
           (prev, next) => prev.posts_count - next.posts_count
-        );
+        )];
+        forumData.topic_list.topics = [...forumData.topic_list.topics.sort(
+          (a, b) => a.posts_count - b.posts_count
+        )];
       }
       if (sortedBy === "views") {
-        sortedPosts = forumData.topic_list.topics.sort(
+        filteredTopics = [...filteredTopics.sort(
           (prev, next) => prev.views - next.views
-        );
+        )];
+        forumData.topic_list.topics = [...forumData.topic_list.topics.sort(
+          (a, b) => a.views - b.views
+        )];
       }
       if (sortedBy === "activity") {
-        sortedPosts = forumData.topic_list.topics.sort(
+        filteredTopics = [...filteredTopics.sort(
           (prev, next) => new Date(prev.bumped_at) - new Date(next.bumped_at)
-        );
+        )];
+        forumData.topic_list.topics = [...forumData.topic_list.topics.sort(
+          (a, b) => new Date(a.bumped_at) - new Date(b.bumped_at)
+        )];
       }
     }
-    displayPostList(sortedPosts);
+    console.log(filteredTopics)
+    displayPostList(filteredTopics);
   }
 }
 
