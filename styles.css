@@ -4,8 +4,9 @@
 *::before,
 *::after {
   box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+  margin-left: 24px;
+  padding: 7px;
+  border-radius: 13px;
 }
 
 :root {
@@ -64,30 +65,37 @@ nav {
 .feedback,
 .html-css {
   background: var(--light-skyblue);
+  border: none;
 }
 
 .support {
   background: var(--light-brown);
+  border: none;
 }
 
 .general {
   background: var(--light-green);
+  border: none;
 }
 
 .javascript {
   background: var(--light-orange);
+  border: none;
 }
 
 .backend-development {
   background: var(--dark-orange);
+  border: none;
 }
 
 .python {
   background: var(--dark-green);
+  border: none;
 }
 
 .motivation {
   background: var(--coral);
+  border: none;
 }
 
 .contributors {
