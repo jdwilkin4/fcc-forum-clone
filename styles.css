@@ -56,7 +56,16 @@ nav {
   height: 32px;
   margin-top: 0.28rem;
 }
-
+.reset {
+  margin-left: 90px;
+}
+#filter-btns button {
+  border-radius: 13px;
+  padding: 7px;
+  border: none;
+  margin: 4px 4px;
+  cursor: pointer;
+}
 .career {
   background: var(--salmon);
 }
