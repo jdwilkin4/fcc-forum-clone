@@ -58,9 +58,8 @@ nav {
 }
 .reset {
   display: flex;
-  justify-content: center;
+  justify-content: space-evenly;
   flex-wrap: wrap;
-  height: 32px;
   margin-top: 0.33rem;
 }
 #filter-btns button {
