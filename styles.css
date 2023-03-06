@@ -57,8 +57,11 @@ nav {
   margin-top: 0.28rem;
 }
 .reset {
+  width: 85vw;
+  margin: auto;
   display: flex;
-  justify-content: space-evenly;
+  justify-content: left;
+  gap: 0.3rem;
   flex-wrap: wrap;
   margin-top: 0.33rem;
 }
