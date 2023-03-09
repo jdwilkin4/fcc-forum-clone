@@ -25,6 +25,11 @@ let isError = false;
 let forumData = null;
 let categories = new Map();
 let topicsToRender;
+let refreshedPage = false;
+let oldTopics;
+let refreshedTopics;
+let refreshedCategoryStates = [];
+let refreshedSortingStates = [];
 
 // MAIN
 document.addEventListener("DOMContentLoaded", () => {
@@ -41,7 +46,8 @@ document.addEventListener("DOMContentLoaded", () => {
     })
     .then((data) => {
       forumData = data;
-      topicsToRender = forumData.topic_list.topics
+      oldTopics = forumData.topic_list.topics;
+      topicsToRender = forumData.topic_list.topics;
       displayPostList(topicsToRender);
       displayCategories();
       activateCategoryBtns();
@@ -58,6 +64,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
+refreshPage();
 
 // AUXILIARY FUNCTIONS
 function displayPostList(posts) {
@@ -125,7 +132,14 @@ function displayCategories() {
   // get categories and their counts
   forumData.topic_list.topics.forEach((topic) => {
     if (categories.has(topic.category_id)) {
-      categories.set(topic.category_id, categories.get(topic.category_id) + 1);
+      if (refreshedPage === false) {
+        categories.set(
+          topic.category_id,
+          categories.get(topic.category_id) + 1
+        );
+      } else {
+        categories.set(topic.category_id, categories.get(topic.category_id));
+      }
       // make sure it only adds those categories we support
     } else if (topic.category_id in supportedTopicCategories) {
       categories.set(topic.category_id, 1);
@@ -145,11 +159,31 @@ function displayCategories() {
 }
 
 function activateCategoryBtns() {
+  let index = 0;
   //add handleFilterClick on each button and add a property to keep tracing if is pressed or not
   categoryButtons.forEach((button) => {
     button.addEventListener("click", handleClickFilter);
-    button.pressed = false;
+    if ((refreshedPage = false)) {
+      button.pressed = false;
+    } else {
+      button.pressed = refreshedCategoryStates[index];
+      index++;
+    }
   });
+  let count = 0;
+  categoryButtons.forEach((button) => {
+    if (button.pressed === true) {
+      topicsToRender = forumData.topic_list.topics.filter(
+        (topic) => topic.category_id === parseInt(button.value)
+      );
+    } else {
+      count++;
+    }
+  });
+
+  if (count === categoryButtons.length) {
+    topicsToRender = forumData.topic_list.topics;
+  }
 
   function handleClickFilter(e) {
     //if target is pressed 1st time
@@ -160,19 +194,20 @@ function activateCategoryBtns() {
         if (categoryButtons[i].value !== e.target.value) {
           categoryButtons[i].pressed = false;
         }
+        refreshedCategoryStates[i] = categoryButtons[i].pressed;
       }
-
       //filter the appropriate topics
-      topicsToRender = 
-        forumData.topic_list.topics.filter(
-          (topic) => topic.category_id === parseInt(e.target.value)
-        );
+      topicsToRender = forumData.topic_list.topics.filter(
+        (topic) => topic.category_id === parseInt(e.target.value)
+      );
 
       //clear container of posts
       postsContainer.innerHTML = "";
-      
     } else {
       e.target.pressed = false;
+      for (let i = 0; i < categoryButtons.length; i++) {
+        refreshedCategoryStates[i] = categoryButtons[i].pressed;
+      }
       topicsToRender = forumData.topic_list.topics;
       postsContainer.innerHTML = "";
     }
@@ -205,7 +240,6 @@ function activateSortBtns() {
   });
 
   function handleSortBtnClick(e) {
-    
     sortBtns.forEach((btn) => {
       if (btn.value !== e.target.value) {
         btn.sortingOrder = null;
@@ -327,4 +361,126 @@ function getUserAvatarComponent(userId) {
     </a>
   `;
   return userAvatar;
+}
+
+function refreshPage() {
+  setInterval(() => {
+    refreshedPage = true;
+    isLoading = false;
+    setLoadingState();
+    // Fetch FCC forum latest data
+    fetch(FORUM_API)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(response.statusText);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        refreshedTopics = data.topic_list.topics;
+        postsContainer.innerHTML = "";
+        categoryBtns.innerHTML = "";
+        takeNewTopics();
+        displayCategories();
+        activateCategoryBtns();
+        displayUsers();
+        activateSortBtns();
+        displayPostList(topicsToRender);
+        displayFooter();
+      })
+      .catch((error) => {
+        isError = true;
+        console.log(error);
+      })
+      .finally(() => {
+        isLoading = false;
+      });
+  }, 30000);
+
+  function takeNewTopics() {
+    let saveTopics = [...refreshedTopics];
+    let newArr = [];
+    let newTopic = "";
+
+    //run through oldTopics and refreshed topics and update all the content
+    //of the old topics that exist in refreshedTopics or if there is one new
+    //topic, push it in an array to save it
+    for (let i = 0; i < oldTopics.length; i++) {
+      for (let j = 0; j < saveTopics.length; j++) {
+        if (saveTopics[j] !== null && saveTopics[j].id === oldTopics[i].id) {
+          oldTopics[i] = saveTopics[j];
+          saveTopics[j] = null;
+          console.log(true);
+        }
+      }
+
+      if (i === 29) {
+        for (let v in saveTopics) {
+          if (saveTopics[v] === null) {
+            console.log(true);
+          } else {
+            newTopic = saveTopics[v];
+            let count1 = 0;
+            if (newArr.length === 0) {
+              newArr.push(newTopic);
+            } else {
+              for (let k in newArr) {
+                if (newTopic.id === newArr[k].id) {
+                  count1++;
+                }
+              }
+
+              if (count1 === 0) {
+                newArr.push(newTopic);
+              }
+            }
+          }
+        }
+      }
+    }
+
+    for (let i in forumData.topic_list.topics) {
+      for (let j in oldTopics) {
+        if (oldTopics[j].id === forumData.topic_list.topics[i].id) {
+          forumData.topic_list.topics[i] = oldTopics[j];
+        }
+      }
+    }
+
+    console.log(newArr);
+
+    //run through the array that saved all new topics
+    //if the topics exist already in forumData just update them
+    //but if they are not push them
+    if (newArr.length > 0) {
+      for (let i in newArr) {
+        let count = 0;
+        for (let j in forumData.topic_list.topics) {
+          if (forumData.topic_list.topics[j].id === newArr[i].id) {
+            forumData.topic_list.topics[j] = newArr[i];
+            count++;
+            console.log(true);
+          }
+        }
+
+        if (count === 0) {
+          let count2 = 0;
+          categoryButtons.forEach((button) => {
+            if (button.pressed === false) {
+              count2++;
+            }
+          });
+          if (count2 === categoryButtons.length) {
+            let firstTopic = forumData.topic_list.topics[0];
+            forumData.topic_list.topics.shift(forumData.topic_list.topics[0]);
+            forumData.topic_list.topics.unshift(newArr[i]);
+            forumData.topic_list.topics.unshift(firstTopic);
+          } else {
+            forumData.topic_list.topics.unshift(newArr[i]);
+          }
+        }
+      }
+    }
+    oldTopics = [...refreshedTopics];
+  }
 }
