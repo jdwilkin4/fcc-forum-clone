@@ -12,6 +12,8 @@ import {
   formatLargeNumber,
 } from "./helpers.js";
 
+import { sortedId } from "./utils.js";
+
 // GLOBALS
 const postsContainer = document.getElementById("posts-container");
 const sortBtns = document.getElementsByName("sort");
@@ -19,6 +21,7 @@ const categoryBtns = document.getElementById("filter-btns");
 const title = document.querySelector("main > h1");
 const userListContainer = document.getElementById("online-user-list");
 const categoryButtons = document.getElementsByName("filter-button");
+const sortIdArr = sortedId();
 
 let isLoading = true;
 let isError = false;
@@ -41,7 +44,7 @@ document.addEventListener("DOMContentLoaded", () => {
     })
     .then((data) => {
       forumData = data;
-      topicsToRender = forumData.topic_list.topics
+      topicsToRender = forumData.topic_list.topics;
       displayPostList(topicsToRender);
       displayCategories();
       activateCategoryBtns();
@@ -57,7 +60,6 @@ document.addEventListener("DOMContentLoaded", () => {
       isLoading = false;
     });
 });
-
 
 // AUXILIARY FUNCTIONS
 function displayPostList(posts) {
@@ -163,14 +165,12 @@ function activateCategoryBtns() {
       }
 
       //filter the appropriate topics
-      topicsToRender = 
-        forumData.topic_list.topics.filter(
-          (topic) => topic.category_id === parseInt(e.target.value)
-        );
+      topicsToRender = forumData.topic_list.topics.filter(
+        (topic) => topic.category_id === parseInt(e.target.value)
+      );
 
       //clear container of posts
       postsContainer.innerHTML = "";
-      
     } else {
       e.target.pressed = false;
       topicsToRender = forumData.topic_list.topics;
@@ -205,7 +205,6 @@ function activateSortBtns() {
   });
 
   function handleSortBtnClick(e) {
-    
     sortBtns.forEach((btn) => {
       if (btn.value !== e.target.value) {
         btn.sortingOrder = null;
@@ -228,6 +227,7 @@ function activateSortBtns() {
         forumData.topic_list.topics = forumData.topic_list.topics.sort(
           (prev, next) => next.posts_count - prev.posts_count
         );
+        displaySortIcon("rUp");
       }
       if (sortedBy === "views") {
         topicsToRender = topicsToRender.sort(
@@ -236,6 +236,7 @@ function activateSortBtns() {
         forumData.topic_list.topics = forumData.topic_list.topics.sort(
           (prev, next) => next.views - prev.views
         );
+        displaySortIcon("vUp");
       }
       if (sortedBy === "activity") {
         topicsToRender = topicsToRender.sort(
@@ -244,6 +245,7 @@ function activateSortBtns() {
         forumData.topic_list.topics = forumData.topic_list.topics.sort(
           (prev, next) => new Date(next.bumped_at) - new Date(prev.bumped_at)
         );
+        displaySortIcon("aUp");
       }
     } else {
       sortBtn.sortingOrder = ascendingOrder;
@@ -254,6 +256,7 @@ function activateSortBtns() {
         forumData.topic_list.topics = forumData.topic_list.topics.sort(
           (prev, next) => prev.posts_count - next.posts_count
         );
+        displaySortIcon("rDown");
       }
       if (sortedBy === "views") {
         topicsToRender = topicsToRender.sort(
@@ -262,6 +265,7 @@ function activateSortBtns() {
         forumData.topic_list.topics = forumData.topic_list.topics.sort(
           (prev, next) => prev.views - next.views
         );
+        displaySortIcon("vDown");
       }
       if (sortedBy === "activity") {
         topicsToRender = topicsToRender.sort(
@@ -270,9 +274,24 @@ function activateSortBtns() {
         forumData.topic_list.topics = forumData.topic_list.topics.sort(
           (prev, next) => new Date(prev.bumped_at) - new Date(next.bumped_at)
         );
+        displaySortIcon("aDown");
       }
     }
     displayPostList(topicsToRender);
+  }
+}
+
+function displaySortIcon(id) {
+  let i = 0;
+  console.log(id);
+  console.log(sortIdArr);
+  while (i < sortIdArr.length) {
+    if (id === sortIdArr[i]) {
+      document.getElementById(sortIdArr[i]).style.display = "block";
+    } else {
+      document.getElementById(sortIdArr[i]).style.display = "none";
+    }
+    i++;
   }
 }
 
