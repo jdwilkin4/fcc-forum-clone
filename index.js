@@ -28,8 +28,10 @@ let topicsToRender;
 let refreshedPage = false;
 let oldTopics;
 let refreshedTopics;
-let refreshedCategoryStates = [];
-let refreshedSortingStates = [];
+let users;
+let updatedUsers;
+let sortBy = { state: "", order: 0 };
+let filterBy = "";
 
 // MAIN
 document.addEventListener("DOMContentLoaded", () => {
@@ -46,6 +48,8 @@ document.addEventListener("DOMContentLoaded", () => {
     })
     .then((data) => {
       forumData = data;
+      users = forumData.users;
+      console.log(users.length);
       oldTopics = forumData.topic_list.topics;
       topicsToRender = forumData.topic_list.topics;
       displayPostList(topicsToRender);
@@ -132,14 +136,7 @@ function displayCategories() {
   // get categories and their counts
   forumData.topic_list.topics.forEach((topic) => {
     if (categories.has(topic.category_id)) {
-      if (refreshedPage === false) {
-        categories.set(
-          topic.category_id,
-          categories.get(topic.category_id) + 1
-        );
-      } else {
-        categories.set(topic.category_id, categories.get(topic.category_id));
-      }
+      categories.set(topic.category_id, categories.get(topic.category_id) + 1);
       // make sure it only adds those categories we support
     } else if (topic.category_id in supportedTopicCategories) {
       categories.set(topic.category_id, 1);
@@ -159,60 +156,34 @@ function displayCategories() {
 }
 
 function activateCategoryBtns() {
-  let index = 0;
-  //add handleFilterClick on each button and add a property to keep tracing if is pressed or not
   categoryButtons.forEach((button) => {
     button.addEventListener("click", handleClickFilter);
-    if ((refreshedPage = false)) {
-      button.pressed = false;
-    } else {
-      button.pressed = refreshedCategoryStates[index];
-      index++;
-    }
   });
-  let count = 0;
-  categoryButtons.forEach((button) => {
-    if (button.pressed === true) {
-      topicsToRender = forumData.topic_list.topics.filter(
-        (topic) => topic.category_id === parseInt(button.value)
-      );
-    } else {
-      count++;
-    }
-  });
-
-  if (count === categoryButtons.length) {
-    topicsToRender = forumData.topic_list.topics;
-  }
 
   function handleClickFilter(e) {
-    //if target is pressed 1st time
-    if (e.target.pressed === false) {
-      e.target.pressed = true;
-      //loop through all other buttons other than the target to unpress them if pressed
-      for (let i = 0; i < categoryButtons.length; i++) {
-        if (categoryButtons[i].value !== e.target.value) {
-          categoryButtons[i].pressed = false;
-        }
-        refreshedCategoryStates[i] = categoryButtons[i].pressed;
-      }
+    if (e.target.value !== filterBy) {
+      filterBy = e.target.value;
+
       //filter the appropriate topics
-      topicsToRender = forumData.topic_list.topics.filter(
-        (topic) => topic.category_id === parseInt(e.target.value)
-      );
-
-      //clear container of posts
-      postsContainer.innerHTML = "";
+      topicsToRender = [
+        ...forumData.topic_list.topics.filter(
+          (topic) => topic.category_id === parseInt(filterBy)
+        ),
+      ];
     } else {
-      e.target.pressed = false;
-      for (let i = 0; i < categoryButtons.length; i++) {
-        refreshedCategoryStates[i] = categoryButtons[i].pressed;
-      }
-      topicsToRender = forumData.topic_list.topics;
-      postsContainer.innerHTML = "";
+      filterBy = "";
+      topicsToRender = [...forumData.topic_list.topics];
     }
-
+    postsContainer.innerHTML = "";
     displayPostList(topicsToRender);
+  }
+}
+
+function filterTopicsOnRefresh(topics, filterBy) {
+  if (filterBy !== "") {
+    topicsToRender = topics.filter(
+      (topic) => topic.category_id === parseInt(filterBy)
+    );
   }
 }
 
@@ -233,13 +204,156 @@ function displayFooter() {
   document.getElementById("copyright").innerText = new Date().getFullYear();
 }
 
+function handleSortTopicsOnRefresh() {
+  let key =
+    sortBy.state === "replies"
+      ? "posts_count"
+      : sortBy.state === "views"
+      ? "views"
+      : "bumped_at";
+
+  if (sortBy.state !== "") {
+    console.log(sortBy);
+    if (sortBy.order === 1) {
+      if (sortBy.state !== "activity") {
+        topicsToRender = [
+          ...topicsToRender.sort((prev, next) => next[key] - prev[key]),
+        ];
+        forumData.topic_list.topics = [
+          ...forumData.topic_list.topics.sort(
+            (prev, next) => next[key] - prev[key]
+          ),
+        ];
+      } else {
+        topicsToRender = [
+          ...topicsToRender.sort(
+            (prev, next) => new Date(next[key]) - new Date(prev[key])
+          ),
+        ];
+        forumData.topic_list.topics = [
+          ...forumData.topic_list.topics.sort(
+            (prev, next) => new Date(next[key]) - new Date(prev[key])
+          ),
+        ];
+      }
+    } else {
+      if (sortBy.state !== "activity") {
+        topicsToRender = [
+          ...topicsToRender.sort((prev, next) => prev[key] - next[key]),
+        ];
+        forumData.topic_list.topics = [
+          ...forumData.topic_list.topics.sort(
+            (prev, next) => prev[key] - next[key]
+          ),
+        ];
+      } else {
+        topicsToRender = [
+          ...topicsToRender.sort(
+            (prev, next) => new Date(prev[key]) - new Date(next[key])
+          ),
+        ];
+        forumData.topic_list.topics = [
+          ...forumData.topic_list.topics.sort(
+            (prev, next) => new Date(prev[key]) - new Date(next[key])
+          ),
+        ];
+      }
+    }
+  }
+}
+
 function activateSortBtns() {
   sortBtns.forEach((btn) => {
     btn.addEventListener("click", handleSortBtnClick);
-    btn.sortingOrder = null;
   });
 
   function handleSortBtnClick(e) {
+    let key =
+      e.target.value === "replies"
+        ? "posts_count"
+        : e.target.value === "views"
+        ? "views"
+        : "bumped_at";
+
+    if (e.target.value !== sortBy.state) {
+      sortBy.state = e.target.value;
+      sortBy.order = 1;
+      if (e.target.value !== "activity") {
+        topicsToRender = [
+          ...topicsToRender.sort((prev, next) => next[key] - prev[key]),
+        ];
+        forumData.topic_list.topics = [
+          ...forumData.topic_list.topics.sort(
+            (prev, next) => next[key] - prev[key]
+          ),
+        ];
+      } else {
+        topicsToRender = [
+          ...topicsToRender.sort(
+            (prev, next) => new Date(next[key]) - new Date(prev[key])
+          ),
+        ];
+        forumData.topic_list.topics = [
+          ...forumData.topic_list.topics.sort(
+            (prev, next) => new Date(next[key]) - new Date(prev[key])
+          ),
+        ];
+      }
+    } else {
+      if (sortBy.order === 0) {
+        sortBy.order = 1;
+        if (e.target.value !== "activity") {
+          topicsToRender = [
+            ...topicsToRender.sort((prev, next) => next[key] - prev[key]),
+          ];
+          forumData.topic_list.topics = [
+            ...forumData.topic_list.topics.sort(
+              (prev, next) => next[key] - prev[key]
+            ),
+          ];
+        } else {
+          topicsToRender = [
+            ...topicsToRender.sort(
+              (prev, next) => new Date(next[key]) - new Date(prev[key])
+            ),
+          ];
+          forumData.topic_list.topics = [
+            ...forumData.topic_list.topics.sort(
+              (prev, next) => new Date(next[key]) - new Date(prev[key])
+            ),
+          ];
+        }
+      } else {
+        sortBy.order = 0;
+        if (e.target.value !== "activity") {
+          topicsToRender = [
+            ...topicsToRender.sort((prev, next) => prev[key] - next[key]),
+          ];
+          forumData.topic_list.topics = [
+            ...forumData.topic_list.topics.sort(
+              (prev, next) => prev[key] - next[key]
+            ),
+          ];
+        } else {
+          topicsToRender = [
+            ...topicsToRender.sort(
+              (prev, next) => new Date(prev[key]) - new Date(next[key])
+            ),
+          ];
+          forumData.topic_list.topics = [
+            ...forumData.topic_list.topics.sort(
+              (prev, next) => new Date(prev[key]) - new Date(next[key])
+            ),
+          ];
+        }
+      }
+    }
+    console.log(sortBy);
+    postsContainer.innerHTML = "";
+    displayPostList(topicsToRender);
+  }
+
+  /*function handleSortBtnClick(e) {
     sortBtns.forEach((btn) => {
       if (btn.value !== e.target.value) {
         btn.sortingOrder = null;
@@ -308,6 +422,7 @@ function activateSortBtns() {
     }
     displayPostList(topicsToRender);
   }
+*/
 }
 
 function setLoadingState() {
@@ -365,7 +480,7 @@ function getUserAvatarComponent(userId) {
 
 function refreshPage() {
   setInterval(() => {
-    refreshedPage = true;
+    //refreshedPage = true;
     isLoading = false;
     setLoadingState();
     // Fetch FCC forum latest data
@@ -377,14 +492,19 @@ function refreshPage() {
         return response.json();
       })
       .then((data) => {
+        updatedUsers = data.users;
         refreshedTopics = data.topic_list.topics;
         postsContainer.innerHTML = "";
         categoryBtns.innerHTML = "";
+        //userListContainer.innerHTML = "";
         takeNewTopics();
+        //takeNewUsers();
+        filterTopicsOnRefresh(topicsToRender, filterBy);
+        handleSortTopicsOnRefresh();
         displayCategories();
         activateCategoryBtns();
         displayUsers();
-        activateSortBtns();
+        //activateSortBtns();
         displayPostList(topicsToRender);
         displayFooter();
       })
@@ -410,15 +530,12 @@ function refreshPage() {
         if (saveTopics[j] !== null && saveTopics[j].id === oldTopics[i].id) {
           oldTopics[i] = saveTopics[j];
           saveTopics[j] = null;
-          console.log(true);
         }
       }
 
       if (i === 29) {
         for (let v in saveTopics) {
-          if (saveTopics[v] === null) {
-            console.log(true);
-          } else {
+          if (saveTopics[v] !== null) {
             newTopic = saveTopics[v];
             let count1 = 0;
             if (newArr.length === 0) {
@@ -459,28 +576,43 @@ function refreshPage() {
           if (forumData.topic_list.topics[j].id === newArr[i].id) {
             forumData.topic_list.topics[j] = newArr[i];
             count++;
-            console.log(true);
           }
         }
-
         if (count === 0) {
-          let count2 = 0;
-          categoryButtons.forEach((button) => {
-            if (button.pressed === false) {
-              count2++;
-            }
-          });
-          if (count2 === categoryButtons.length) {
-            let firstTopic = forumData.topic_list.topics[0];
-            forumData.topic_list.topics.shift(forumData.topic_list.topics[0]);
-            forumData.topic_list.topics.unshift(newArr[i]);
-            forumData.topic_list.topics.unshift(firstTopic);
-          } else {
-            forumData.topic_list.topics.unshift(newArr[i]);
-          }
+          forumData.topic_list.topics.push(newArr[i]);
         }
       }
     }
+
+    if (sortBy.state === "" && filterBy === "") {
+      forumData.topic_list.topics = forumData.topic_list.topics.sort(
+        (prev, next) => new Date(next.bumped_at) - new Date(prev.bumped_at)
+      );
+      let topic = forumData.topic_list.topics.pop();
+      forumData.topic_list.topics.unshift(topic);
+    }
+    topicsToRender = [...forumData.topic_list.topics];
     oldTopics = [...refreshedTopics];
   }
 }
+
+/*function takeNewUsers() {
+   for (let i in users) {
+
+      let count = 0;
+      for(let j in updatedUsers) {
+        if (updatedUsers[j] !== null && updatedUsers[j].id === users[i].id) {
+          count++
+        }
+      }
+      
+      if(count === 0) {
+        console.log(updatedUsers[j])
+        forumData.users.push(updatedUsers[j])
+      }
+   }
+
+   users = [...updatedUsers]
+   console.log(forumData.users.length);
+   
+}*/
