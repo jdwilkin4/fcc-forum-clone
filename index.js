@@ -319,7 +319,6 @@ function refreshPage() {
     });
 
   function processTopics(topics, newTopics) {
-    console.log(topics);
     if (topics.length === 0) {
       return newTopics;
     }
@@ -335,17 +334,14 @@ function refreshPage() {
         }
       }
       if (count === 0) {
-        console.log(oldTopic);
         combinedTopics.push(oldTopic);
       }
     }
 
-    console.log(combinedTopics);
     return combinedTopics;
   }
 
   function processUsers(users, newUsers) {
-    console.log(users);
     if (users.length === 0) {
       return newUsers;
     }
@@ -361,12 +357,10 @@ function refreshPage() {
         }
       }
       if (count === 0) {
-        console.log(oldUser);
         combinedUsers.push(oldUser);
       }
     }
 
-    console.log(combinedUsers);
     return combinedUsers;
   }
 }
