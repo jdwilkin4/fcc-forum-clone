@@ -22,54 +22,25 @@ const categoryButtons = document.getElementsByName("filter-button");
 
 let isLoading = true;
 let isError = false;
-let forumData = null;
+let forumData = {
+  topics: [],
+  users: [],
+};
 let categories = new Map();
 let topicsToRender;
-let refreshedPage = false;
-let oldTopics;
 let refreshedTopics;
-let users;
-let updatedUsers;
+let refreshedUsers;
+let usersToRender;
 let sortBy = { state: "", order: 0 };
 let filterBy = "";
 
 // MAIN
 document.addEventListener("DOMContentLoaded", () => {
   // DOMContentLoaded event fires when the HTML document has been completely parsed
+  refreshPage();
 
-  setLoadingState();
-  // Fetch FCC forum latest data
-  fetch(FORUM_API)
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error(response.statusText);
-      }
-      return response.json();
-    })
-    .then((data) => {
-      forumData = data;
-      users = forumData.users;
-      console.log(users.length);
-      oldTopics = forumData.topic_list.topics;
-      topicsToRender = forumData.topic_list.topics;
-      displayPostList(topicsToRender);
-      displayCategories();
-      activateCategoryBtns();
-      displayUsers();
-      displayFooter();
-      activateSortBtns();
-    })
-    .catch((error) => {
-      isError = true;
-      console.log(error);
-    })
-    .finally(() => {
-      isLoading = false;
-    });
+  setInterval(refreshPage, 30000);
 });
-
-refreshPage();
-
 // AUXILIARY FUNCTIONS
 function displayPostList(posts) {
   posts = filterTopics(posts, filterBy);
@@ -137,7 +108,7 @@ function displayPostList(posts) {
 
 function displayCategories() {
   // get categories and their counts
-  forumData.topic_list.topics.forEach((topic) => {
+  forumData.topics.forEach((topic) => {
     if (categories.has(topic.category_id)) {
       categories.set(topic.category_id, categories.get(topic.category_id) + 1);
       // make sure it only adds those categories we support
@@ -159,14 +130,11 @@ function displayCategories() {
 }
 
 function filterTopics(topics, filterBy) {
-  let filteredTopics = [...topics];
-  if (filterBy !== "") {
-    filteredTopics = topics.filter(
-      (topic) => topic.category_id === parseInt(filterBy)
-    );
-  } else {
-    filteredTopics = [...topics];
-  }
+  if (!filterBy) return topics;
+  let categoryId = parseInt(filterBy);
+  let filteredTopics = topics.filter(
+    (topic) => topic.category_id === categoryId
+  );
   return filteredTopics;
 }
 
@@ -188,8 +156,8 @@ function activateCategoryBtns() {
   }
 }
 
-function displayUsers() {
-  const users = forumData.users;
+function displayUsers(users) {
+  //const users = forumData.users;
   const ids = users.map((user) => user.id);
 
   let onlineUsersAvatars = `<span>Online (${ids.length}):</span>`;
@@ -209,7 +177,6 @@ function sortTopics(topics, key) {
   let sortedTopics = [...topics];
 
   if (sortBy.state !== "") {
-    console.log(sortBy);
     if (sortBy.order === 1) {
       if (sortBy.state !== "activity") {
         sortedTopics.sort((prev, next) => next[key] - prev[key]);
@@ -236,26 +203,26 @@ function activateSortBtns() {
   sortBtns.forEach((btn) => {
     btn.addEventListener("click", handleSortBtnClick);
   });
+}
 
-  function handleSortBtnClick(e) {
-    let key =
-      e.target.value === "replies"
-        ? "posts_count"
-        : e.target.value === "views"
-        ? "views"
-        : "bumped_at";
+function handleSortBtnClick(e) {
+  let key =
+    e.target.value === "replies"
+      ? "posts_count"
+      : e.target.value === "views"
+      ? "views"
+      : "bumped_at";
 
-    if (key !== sortBy.state) {
-      sortBy.order = 1;
-    } else {
-      sortBy.order = sortBy.order === 0 ? 1 : 0;
-    }
-
-    sortBy.state = key;
-    let sortedTopics = sortTopics(topicsToRender, key);
-    postsContainer.innerHTML = "";
-    displayPostList(sortedTopics);
+  if (key !== sortBy.state) {
+    sortBy.order = 1;
+  } else {
+    sortBy.order = sortBy.order === 0 ? 1 : 0;
   }
+
+  sortBy.state = key;
+  let sortedTopics = sortTopics(topicsToRender, key);
+  postsContainer.innerHTML = "";
+  displayPostList(sortedTopics);
 }
 
 function setLoadingState() {
@@ -312,139 +279,94 @@ function getUserAvatarComponent(userId) {
 }
 
 function refreshPage() {
-  setInterval(() => {
-    //refreshedPage = true;
-    isLoading = false;
-    setLoadingState();
-    // Fetch FCC forum latest data
-    fetch(FORUM_API)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(response.statusText);
-        }
-        return response.json();
-      })
-      .then((data) => {
-        updatedUsers = data.users;
-        refreshedTopics = data.topic_list.topics;
-        categories = new Map();
-        postsContainer.innerHTML = "";
-        categoryBtns.innerHTML = "";
-        //userListContainer.innerHTML = "";
-        //takeNewTopics();
-        //takeNewUsers();
-        displayCategories();
-        activateCategoryBtns();
-        displayUsers();
-        //activateSortBtns();
-        displayPostList(topicsToRender);
-        displayFooter();
-      })
-      .catch((error) => {
-        isError = true;
-        console.log(error);
-      })
-      .finally(() => {
-        isLoading = false;
+  isLoading = true;
+  setLoadingState();
+  // Fetch FCC forum latest data
+  fetch(FORUM_API)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(response.statusText);
+      }
+      return response.json();
+    })
+    .then((data) => {
+      refreshedTopics = data.topic_list.topics;
+      refreshedUsers = data.users;
+      forumData.users = processUsers(forumData.users, refreshedUsers);
+      forumData.topics = processTopics(forumData.topics, refreshedTopics);
+      topicsToRender = forumData.topics;
+      usersToRender = forumData.users;
+      categories = new Map();
+      userListContainer.innerHTML = "";
+      postsContainer.innerHTML = "";
+      categoryBtns.innerHTML = "";
+      sortBtns.forEach((btn) => {
+        btn.removeEventListener("click", handleSortBtnClick);
       });
-  }, 30000);
+      displayCategories();
+      activateCategoryBtns();
+      activateSortBtns();
+      displayUsers(usersToRender);
+      displayPostList(topicsToRender);
+      displayFooter();
+    })
+    .catch((error) => {
+      isError = true;
+      console.log(error);
+    })
+    .finally(() => {
+      isLoading = false;
+    });
 
-  function takeNewTopics() {
-    let saveTopics = [...refreshedTopics];
-    let newArr = [];
-    let newTopic = "";
-
-    //run through oldTopics and refreshed topics and update all the content
-    //of the old topics that exist in refreshedTopics or if there is one new
-    //topic, push it in an array to save it
-    for (let i = 0; i < oldTopics.length; i++) {
-      for (let j = 0; j < saveTopics.length; j++) {
-        if (saveTopics[j] !== null && saveTopics[j].id === oldTopics[i].id) {
-          oldTopics[i] = saveTopics[j];
-          saveTopics[j] = null;
+  function processTopics(topics, newTopics) {
+    console.log(topics);
+    if (topics.length === 0) {
+      return newTopics;
+    }
+    let combinedTopics = [...newTopics];
+    let oldTopic;
+    for (let topic in topics) {
+      let count = 0;
+      for (let newTopic in newTopics) {
+        if (topics[topic].id === newTopics[newTopic].id) {
+          count++;
+        } else {
+          oldTopic = topics[topic];
         }
       }
-
-      if (i === 29) {
-        for (let v in saveTopics) {
-          if (saveTopics[v] !== null) {
-            newTopic = saveTopics[v];
-            let count1 = 0;
-            if (newArr.length === 0) {
-              newArr.push(newTopic);
-            } else {
-              for (let k in newArr) {
-                if (newTopic.id === newArr[k].id) {
-                  count1++;
-                }
-              }
-
-              if (count1 === 0) {
-                newArr.push(newTopic);
-              }
-            }
-          }
-        }
+      if (count === 0) {
+        console.log(oldTopic);
+        combinedTopics.push(oldTopic);
       }
     }
 
-    for (let i in forumData.topic_list.topics) {
-      for (let j in oldTopics) {
-        if (oldTopics[j].id === forumData.topic_list.topics[i].id) {
-          forumData.topic_list.topics[i] = oldTopics[j];
+    console.log(combinedTopics);
+    return combinedTopics;
+  }
+
+  function processUsers(users, newUsers) {
+    console.log(users);
+    if (users.length === 0) {
+      return newUsers;
+    }
+    let combinedUsers = [...newUsers];
+    let oldUser;
+    for (let user in users) {
+      let count = 0;
+      for (let newUser in newUsers) {
+        if (users[user].id === newUsers[newUser].id) {
+          count++;
+        } else {
+          oldUser = users[user];
         }
+      }
+      if (count === 0) {
+        console.log(oldUser);
+        combinedUsers.push(oldUser);
       }
     }
 
-    console.log(newArr);
-
-    //run through the array that saved all new topics
-    //if the topics exist already in forumData just update them
-    //but if they are not push them
-    if (newArr.length > 0) {
-      for (let i in newArr) {
-        let count = 0;
-        for (let j in forumData.topic_list.topics) {
-          if (forumData.topic_list.topics[j].id === newArr[i].id) {
-            forumData.topic_list.topics[j] = newArr[i];
-            count++;
-          }
-        }
-        if (count === 0) {
-          forumData.topic_list.topics.push(newArr[i]);
-        }
-      }
-    }
-
-    if (sortBy.state === "" && filterBy === "") {
-      forumData.topic_list.topics = forumData.topic_list.topics.sort(
-        (prev, next) => new Date(next.bumped_at) - new Date(prev.bumped_at)
-      );
-      let topic = forumData.topic_list.topics.pop();
-      forumData.topic_list.topics.unshift(topic);
-    }
-    topicsToRender = [...forumData.topic_list.topics];
-    oldTopics = [...refreshedTopics];
+    console.log(combinedUsers);
+    return combinedUsers;
   }
 }
-
-/*function takeNewUsers() {
-   for (let i in users) {
-
-      let count = 0;
-      for(let j in updatedUsers) {
-        if (updatedUsers[j] !== null && updatedUsers[j].id === users[i].id) {
-          count++
-        }
-      }
-      
-      if(count === 0) {
-        console.log(updatedUsers[j])
-        forumData.users.push(updatedUsers[j])
-      }
-   }
-
-   users = [...updatedUsers]
-   console.log(forumData.users.length);
-   
-}*/
