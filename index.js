@@ -294,7 +294,7 @@ function refreshPage() {
       forumData.topics = processTopicsOrUsers(
         forumData.topics,
         refreshedTopics
-      );
+      ).filter((topic) => topic.category_id in supportedTopicCategories);
       topicsToRender = forumData.topics;
       usersToRender = forumData.users;
       categories = new Map();
@@ -320,43 +320,16 @@ function refreshPage() {
     });
 
   function processTopicsOrUsers(currArr, newArr) {
-    if (!currArr.length) {
-      const finalArr = [];
-      newArr.forEach((topic) => {
-        if (topic.hasOwnProperty("category_id")) {
-          if (topic.category_id in supportedTopicCategories) {
-            finalArr.push(topic);
-          }
-        } else {
-          finalArr.push(topic);
-        }
-      });
-
-      return finalArr;
-    }
+    if (!currArr.length) return newArr;
 
     const finalArr = [];
     const currMap = new Map();
 
-    currArr.forEach((obj) => {
-      if (obj.hasOwnProperty("category_id")) {
-        if (obj.category_id in supportedTopicCategories) {
-          currMap.set(obj.id, obj);
-        }
-      } else {
-        currMap.set(obj.id, obj);
-      }
-    });
+    currArr.forEach((obj) => currMap.set(obj.id, obj));
+
     for (const obj of newArr) {
-      if (obj.hasOwnProperty("category_id")) {
-        if (obj.category_id in supportedTopicCategories) {
-          finalArr.push(obj);
-          currMap.delete(obj.id);
-        }
-      } else {
-        finalArr.push(obj);
-        currMap.delete(obj.id);
-      }
+      finalArr.push(obj);
+      currMap.delete(obj.id);
     }
 
     currMap.forEach((obj) => finalArr.push(obj));
