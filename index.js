@@ -173,24 +173,24 @@ function displayFooter() {
   document.getElementById("copyright").innerText = new Date().getFullYear();
 }
 
-function sortTopics(topics, key) {
+function sortTopics(topics, toSortBy) {
   let sortedTopics = [...topics];
 
   if (sortBy.state !== "") {
     if (sortBy.order === 1) {
       if (sortBy.state !== "activity") {
-        sortedTopics.sort((prev, next) => next[key] - prev[key]);
+        sortedTopics.sort((prev, next) => next[toSortBy] - prev[toSortBy]);
       } else {
         sortedTopics.sort(
-          (prev, next) => new Date(next[key]) - new Date(prev[key])
+          (prev, next) => new Date(next[toSortBy]) - new Date(prev[toSortBy])
         );
       }
     } else {
       if (sortBy.state !== "activity") {
-        sortedTopics.sort((prev, next) => prev[key] - next[key]);
+        sortedTopics.sort((prev, next) => prev[toSortBy] - next[toSortBy]);
       } else {
         sortedTopics.sort(
-          (prev, next) => new Date(prev[key]) - new Date(next[key])
+          (prev, next) => new Date(prev[toSortBy]) - new Date(next[toSortBy])
         );
       }
     }
@@ -206,21 +206,21 @@ function activateSortBtns() {
 }
 
 function handleSortBtnClick(e) {
-  let key =
+  let toSortBy =
     e.target.value === "replies"
       ? "posts_count"
       : e.target.value === "views"
       ? "views"
       : "bumped_at";
 
-  if (key !== sortBy.state) {
+  if (toSortBy !== sortBy.state) {
     sortBy.order = 1;
   } else {
     sortBy.order = sortBy.order === 0 ? 1 : 0;
   }
 
-  sortBy.state = key;
-  let sortedTopics = sortTopics(topicsToRender, key);
+  sortBy.state = toSortBy;
+  let sortedTopics = sortTopics(topicsToRender, toSortBy);
   postsContainer.innerHTML = "";
   displayPostList(sortedTopics);
 }
@@ -292,8 +292,11 @@ function refreshPage() {
     .then((data) => {
       refreshedTopics = data.topic_list.topics;
       refreshedUsers = data.users;
-      forumData.users = processUsers(forumData.users, refreshedUsers);
-      forumData.topics = processTopics(forumData.topics, refreshedTopics);
+      forumData.users = processTopicsOrUsers(forumData.users, refreshedUsers);
+      forumData.topics = processTopicsOrUsers(
+        forumData.topics,
+        refreshedTopics
+      );
       topicsToRender = forumData.topics;
       usersToRender = forumData.users;
       categories = new Map();
@@ -318,49 +321,28 @@ function refreshPage() {
       isLoading = false;
     });
 
-  function processTopics(topics, newTopics) {
-    if (topics.length === 0) {
-      return newTopics;
-    }
-    let combinedTopics = [...newTopics];
-    let oldTopic;
-    for (let topic in topics) {
+  function processTopicsOrUsers(topicsOrUsers, newTopicsOrUsers) {
+    if (topicsOrUsers.length === 0) return newTopicsOrUsers;
+
+    let combinedTopicsOrUsers = [...newTopicsOrUsers];
+    let oldTopicOrUser;
+
+    for (let topicOrUser in topicsOrUsers) {
       let count = 0;
-      for (let newTopic in newTopics) {
-        if (topics[topic].id === newTopics[newTopic].id) {
+      for (let newTopicOrUser in newTopicsOrUsers) {
+        if (
+          topicsOrUsers[topicOrUser].id === newTopicsOrUsers[newTopicOrUser].id
+        ) {
           count++;
         } else {
-          oldTopic = topics[topic];
+          oldTopicOrUser = topicsOrUsers[topicOrUser];
         }
       }
       if (count === 0) {
-        combinedTopics.push(oldTopic);
+        combinedTopicsOrUsers.push(oldTopicOrUser);
       }
     }
 
-    return combinedTopics;
-  }
-
-  function processUsers(users, newUsers) {
-    if (users.length === 0) {
-      return newUsers;
-    }
-    let combinedUsers = [...newUsers];
-    let oldUser;
-    for (let user in users) {
-      let count = 0;
-      for (let newUser in newUsers) {
-        if (users[user].id === newUsers[newUser].id) {
-          count++;
-        } else {
-          oldUser = users[user];
-        }
-      }
-      if (count === 0) {
-        combinedUsers.push(oldUser);
-      }
-    }
-
-    return combinedUsers;
+    return combinedTopicsOrUsers;
   }
 }
