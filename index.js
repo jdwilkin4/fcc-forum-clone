@@ -331,6 +331,8 @@ function refreshPage() {
           finalArr.push(topic);
         }
       });
+
+      return finalArr;
     }
 
     const finalArr = [];
