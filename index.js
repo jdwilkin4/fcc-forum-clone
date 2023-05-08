@@ -46,9 +46,7 @@ function displayPostList(posts) {
   posts = filterTopics(posts, filterBy);
   posts = sortTopics(posts, sortBy.state);
 
-  posts
-    .filter((post) => post.category_id in supportedTopicCategories)
-    .forEach(displayPost);
+  posts.forEach(displayPost);
 
   function displayPost(post) {
     const category = supportedTopicCategories[post.category_id];
@@ -321,28 +319,45 @@ function refreshPage() {
       isLoading = false;
     });
 
-  function processTopicsOrUsers(topicsOrUsers, newTopicsOrUsers) {
-    if (topicsOrUsers.length === 0) return newTopicsOrUsers;
-
-    let combinedTopicsOrUsers = [...newTopicsOrUsers];
-    let oldTopicOrUser;
-
-    for (let topicOrUser in topicsOrUsers) {
-      let count = 0;
-      for (let newTopicOrUser in newTopicsOrUsers) {
-        if (
-          topicsOrUsers[topicOrUser].id === newTopicsOrUsers[newTopicOrUser].id
-        ) {
-          count++;
+  function processTopicsOrUsers(currArr, newArr) {
+    if (!currArr.length) {
+      const finalArr = [];
+      newArr.forEach((topic) => {
+        if (topic.hasOwnProperty("category_id")) {
+          if (topic.category_id in supportedTopicCategories) {
+            finalArr.push(topic);
+          }
         } else {
-          oldTopicOrUser = topicsOrUsers[topicOrUser];
+          finalArr.push(topic);
         }
+      });
+    }
+
+    const finalArr = [];
+    const currMap = new Map();
+
+    currArr.forEach((obj) => {
+      if (obj.hasOwnProperty("category_id")) {
+        if (obj.category_id in supportedTopicCategories) {
+          currMap.set(obj.id, obj);
+        }
+      } else {
+        currMap.set(obj.id, obj);
       }
-      if (count === 0) {
-        combinedTopicsOrUsers.push(oldTopicOrUser);
+    });
+    for (const obj of newArr) {
+      if (obj.hasOwnProperty("category_id")) {
+        if (obj.category_id in supportedTopicCategories) {
+          finalArr.push(obj);
+          currMap.delete(obj.id);
+        }
+      } else {
+        finalArr.push(obj);
+        currMap.delete(obj.id);
       }
     }
 
-    return combinedTopicsOrUsers;
+    currMap.forEach((obj) => finalArr.push(obj));
+    return finalArr;
   }
 }
