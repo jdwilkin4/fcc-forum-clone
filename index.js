@@ -22,48 +22,31 @@ const categoryButtons = document.getElementsByName("filter-button");
 
 let isLoading = true;
 let isError = false;
-let forumData = null;
+let forumData = {
+  topics: [],
+  users: [],
+};
 let categories = new Map();
 let topicsToRender;
+let refreshedTopics;
+let refreshedUsers;
+let usersToRender;
+let sortBy = { state: "", order: 0 };
+let filterBy = "";
 
 // MAIN
 document.addEventListener("DOMContentLoaded", () => {
   // DOMContentLoaded event fires when the HTML document has been completely parsed
+  refreshPage();
 
-  setLoadingState();
-  // Fetch FCC forum latest data
-  fetch(FORUM_API)
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error(response.statusText);
-      }
-      return response.json();
-    })
-    .then((data) => {
-      forumData = data;
-      topicsToRender = forumData.topic_list.topics
-      displayPostList(topicsToRender);
-      displayCategories();
-      activateCategoryBtns();
-      displayUsers();
-      displayFooter();
-      activateSortBtns();
-    })
-    .catch((error) => {
-      isError = true;
-      console.log(error);
-    })
-    .finally(() => {
-      isLoading = false;
-    });
+  setInterval(refreshPage, 30000);
 });
-
-
 // AUXILIARY FUNCTIONS
 function displayPostList(posts) {
-  posts
-    .filter((post) => post.category_id in supportedTopicCategories)
-    .forEach(displayPost);
+  posts = filterTopics(posts, filterBy);
+  posts = sortTopics(posts, sortBy.state);
+
+  posts.forEach(displayPost);
 
   function displayPost(post) {
     const category = supportedTopicCategories[post.category_id];
@@ -123,7 +106,7 @@ function displayPostList(posts) {
 
 function displayCategories() {
   // get categories and their counts
-  forumData.topic_list.topics.forEach((topic) => {
+  forumData.topics.forEach((topic) => {
     if (categories.has(topic.category_id)) {
       categories.set(topic.category_id, categories.get(topic.category_id) + 1);
       // make sure it only adds those categories we support
@@ -144,45 +127,35 @@ function displayCategories() {
   });
 }
 
+function filterTopics(topics, filterBy) {
+  if (!filterBy) return topics;
+  let categoryId = parseInt(filterBy);
+  let filteredTopics = topics.filter(
+    (topic) => topic.category_id === categoryId
+  );
+  return filteredTopics;
+}
+
 function activateCategoryBtns() {
-  //add handleFilterClick on each button and add a property to keep tracing if is pressed or not
   categoryButtons.forEach((button) => {
     button.addEventListener("click", handleClickFilter);
-    button.pressed = false;
   });
 
   function handleClickFilter(e) {
-    //if target is pressed 1st time
-    if (e.target.pressed === false) {
-      e.target.pressed = true;
-      //loop through all other buttons other than the target to unpress them if pressed
-      for (let i = 0; i < categoryButtons.length; i++) {
-        if (categoryButtons[i].value !== e.target.value) {
-          categoryButtons[i].pressed = false;
-        }
-      }
-
-      //filter the appropriate topics
-      topicsToRender = 
-        forumData.topic_list.topics.filter(
-          (topic) => topic.category_id === parseInt(e.target.value)
-        );
-
-      //clear container of posts
-      postsContainer.innerHTML = "";
-      
+    if (filterBy !== e.target.value) {
+      filterBy = e.target.value;
     } else {
-      e.target.pressed = false;
-      topicsToRender = forumData.topic_list.topics;
-      postsContainer.innerHTML = "";
+      filterBy = "";
     }
 
-    displayPostList(topicsToRender);
+    let filteredTopics = filterTopics(topicsToRender, filterBy);
+    postsContainer.innerHTML = "";
+    displayPostList(filteredTopics);
   }
 }
 
-function displayUsers() {
-  const users = forumData.users;
+function displayUsers(users) {
+  //const users = forumData.users;
   const ids = users.map((user) => user.id);
 
   let onlineUsersAvatars = `<span>Online (${ids.length}):</span>`;
@@ -198,82 +171,56 @@ function displayFooter() {
   document.getElementById("copyright").innerText = new Date().getFullYear();
 }
 
-function activateSortBtns() {
-  sortBtns.forEach((btn) => {
-    btn.addEventListener("click", handleSortBtnClick);
-    btn.sortingOrder = null;
-  });
+function sortTopics(topics, toSortBy) {
+  let sortedTopics = [...topics];
 
-  function handleSortBtnClick(e) {
-    
-    sortBtns.forEach((btn) => {
-      if (btn.value !== e.target.value) {
-        btn.sortingOrder = null;
-      }
-    });
-
-    let sortBtn = e.target;
-    let sortedBy = sortBtn.value;
-    let descendingOrder = 1;
-    let ascendingOrder = 2;
-
-    postsContainer.innerHTML = "";
-
-    if (!sortBtn.sortingOrder || sortBtn.sortingOrder === ascendingOrder) {
-      sortBtn.sortingOrder = descendingOrder;
-      if (sortedBy === "replies") {
-        topicsToRender = topicsToRender.sort(
-          (prev, next) => next.posts_count - prev.posts_count
-        );
-        forumData.topic_list.topics = forumData.topic_list.topics.sort(
-          (prev, next) => next.posts_count - prev.posts_count
-        );
-      }
-      if (sortedBy === "views") {
-        topicsToRender = topicsToRender.sort(
-          (prev, next) => next.views - prev.views
-        );
-        forumData.topic_list.topics = forumData.topic_list.topics.sort(
-          (prev, next) => next.views - prev.views
-        );
-      }
-      if (sortedBy === "activity") {
-        topicsToRender = topicsToRender.sort(
-          (prev, next) => new Date(next.bumped_at) - new Date(prev.bumped_at)
-        );
-        forumData.topic_list.topics = forumData.topic_list.topics.sort(
-          (prev, next) => new Date(next.bumped_at) - new Date(prev.bumped_at)
+  if (sortBy.state !== "") {
+    if (sortBy.order === 1) {
+      if (sortBy.state !== "activity") {
+        sortedTopics.sort((prev, next) => next[toSortBy] - prev[toSortBy]);
+      } else {
+        sortedTopics.sort(
+          (prev, next) => new Date(next[toSortBy]) - new Date(prev[toSortBy])
         );
       }
     } else {
-      sortBtn.sortingOrder = ascendingOrder;
-      if (sortedBy === "replies") {
-        topicsToRender = topicsToRender.sort(
-          (prev, next) => prev.posts_count - next.posts_count
-        );
-        forumData.topic_list.topics = forumData.topic_list.topics.sort(
-          (prev, next) => prev.posts_count - next.posts_count
-        );
-      }
-      if (sortedBy === "views") {
-        topicsToRender = topicsToRender.sort(
-          (prev, next) => prev.views - next.views
-        );
-        forumData.topic_list.topics = forumData.topic_list.topics.sort(
-          (prev, next) => prev.views - next.views
-        );
-      }
-      if (sortedBy === "activity") {
-        topicsToRender = topicsToRender.sort(
-          (prev, next) => new Date(prev.bumped_at) - new Date(next.bumped_at)
-        );
-        forumData.topic_list.topics = forumData.topic_list.topics.sort(
-          (prev, next) => new Date(prev.bumped_at) - new Date(next.bumped_at)
+      if (sortBy.state !== "activity") {
+        sortedTopics.sort((prev, next) => prev[toSortBy] - next[toSortBy]);
+      } else {
+        sortedTopics.sort(
+          (prev, next) => new Date(prev[toSortBy]) - new Date(next[toSortBy])
         );
       }
     }
-    displayPostList(topicsToRender);
   }
+
+  return sortedTopics;
+}
+
+function activateSortBtns() {
+  sortBtns.forEach((btn) => {
+    btn.addEventListener("click", handleSortBtnClick);
+  });
+}
+
+function handleSortBtnClick(e) {
+  let toSortBy =
+    e.target.value === "replies"
+      ? "posts_count"
+      : e.target.value === "views"
+      ? "views"
+      : "bumped_at";
+
+  if (toSortBy !== sortBy.state) {
+    sortBy.order = 1;
+  } else {
+    sortBy.order = sortBy.order === 0 ? 1 : 0;
+  }
+
+  sortBy.state = toSortBy;
+  let sortedTopics = sortTopics(topicsToRender, toSortBy);
+  postsContainer.innerHTML = "";
+  displayPostList(sortedTopics);
 }
 
 function setLoadingState() {
@@ -327,4 +274,65 @@ function getUserAvatarComponent(userId) {
     </a>
   `;
   return userAvatar;
+}
+
+function refreshPage() {
+  isLoading = true;
+  setLoadingState();
+  // Fetch FCC forum latest data
+  fetch(FORUM_API)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(response.statusText);
+      }
+      return response.json();
+    })
+    .then((data) => {
+      refreshedTopics = data.topic_list.topics;
+      refreshedUsers = data.users;
+      forumData.users = processTopicsOrUsers(forumData.users, refreshedUsers);
+      forumData.topics = processTopicsOrUsers(
+        forumData.topics,
+        refreshedTopics
+      ).filter((topic) => topic.category_id in supportedTopicCategories);
+      topicsToRender = forumData.topics;
+      usersToRender = forumData.users;
+      categories = new Map();
+      userListContainer.innerHTML = "";
+      postsContainer.innerHTML = "";
+      categoryBtns.innerHTML = "";
+      sortBtns.forEach((btn) => {
+        btn.removeEventListener("click", handleSortBtnClick);
+      });
+      displayCategories();
+      activateCategoryBtns();
+      activateSortBtns();
+      displayUsers(usersToRender);
+      displayPostList(topicsToRender);
+      displayFooter();
+    })
+    .catch((error) => {
+      isError = true;
+      console.log(error);
+    })
+    .finally(() => {
+      isLoading = false;
+    });
+
+  function processTopicsOrUsers(currArr, newArr) {
+    if (!currArr.length) return newArr;
+
+    const finalArr = [];
+    const currMap = new Map();
+
+    currArr.forEach((obj) => currMap.set(obj.id, obj));
+
+    for (const obj of newArr) {
+      finalArr.push(obj);
+      currMap.delete(obj.id);
+    }
+
+    currMap.forEach((obj) => finalArr.push(obj));
+    return finalArr;
+  }
 }
