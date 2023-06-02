@@ -9,9 +9,10 @@ This work is inspired by the [freeCodeCamp Forum Homepage](https://www.freecodec
 [![Discord server](https://user-images.githubusercontent.com/65303812/221849016-b67e6f6d-2510-4673-b6a4-7eacaf79942f.png)](https://discord.gg/mkvDfk55P2)
 
 ## Tech Stack
-  - ![HTML5](https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white)
-  - ![CSS3](https://img.shields.io/badge/css3-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white)
-  - ![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E)
+
+- ![HTML5](https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white)
+- ![CSS3](https://img.shields.io/badge/css3-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white)
+- ![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E)
 
 ## Table of contents<!-- omit in toc -->
 

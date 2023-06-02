@@ -90,7 +90,15 @@ Change to the FCC forum clone directory on your computer (if you are not already
 cd fcc-forum-clone
 ```
 
-Now create a branch and switch to that new branch using the `git checkout` command. _One way to name a branch would be: `<number-of-issue>-<type-of-changes>-<what-the-issue-is-about>`_
+We have already deployed our [version 1](https://fcc-forum-clone.netlify.app/) of the application and the `main` branch is meant for the production code, in other words, it should not be modified directly. Branch called `v1` is our current working branch used to develop features for version 2. Therefore, you need to first change to this `v1` branch by `git checkout v1`.
+
+Pick an issue to work on.
+
+Now you need to create a new branch for the changes you plan to implement to solve the issue.
+To create a branch and switch to that new branch, use the `git checkout` command.
+We follow simple naming convention to name your branch.
+_One way to name a branch would be: `<number-of-issue>-<type-of-changes>-<what-the-issue-is-about>`_
+So when you pick issue number #42 with title "Add sorting mechanism to the user list", your new branch's name should look like `#42-user-list-sorting` or similar.
 
 ```
 git checkout -b your-new-branch-name
